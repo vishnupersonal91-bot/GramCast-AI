@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Farmer Voice Advisory - GramCast AI</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              green: '#15803d',
+              greenLight: '#22c55e',
+              greenSoft: '#f0fdf4',
+              blue: '#0284c7',
+              blueLight: '#38bdf8',
+              blueSoft: '#f0f9ff',
+              slateBg: '#f8fafc'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- GramCast Central Shared App State & Farmer Profile Manager -->
+  <script src="app-state.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Tamil:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', 'Noto Sans Tamil', sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .custom-gradient-text {
+      background: linear-gradient(135deg, #15803d 0%, #0284c7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .card-shadow {
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+    }
+    .voice-glow {
+      box-shadow: 0 12px 35px -5px rgba(2, 132, 199, 0.15), 0 6px 16px -4px rgba(21, 128, 61, 0.12);
+    }
+    .play-btn-pulse {
+      box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.5);
+      animation: pulseButton 2s infinite;
+    }
+    @keyframes pulseButton {
+      0% {
+        box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.5);
+      }
+      70% {
+        box-shadow: 0 0 0 18px rgba(2, 132, 199, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(2, 132, 199, 0);
+      }
+    }
+    .audio-wave {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 24px;
+    }
+    .audio-bar {
+      width: 4px;
+      background-color: currentColor;
+      border-radius: 9999px;
+      transition: height 0.2s ease;
+    }
+    .playing .audio-bar:nth-child(1) { animation: bounce 0.8s ease-in-out infinite alternate; height: 60%; }
+    .playing .audio-bar:nth-child(2) { animation: bounce 1.1s ease-in-out infinite alternate 0.2s; height: 90%; }
+    .playing .audio-bar:nth-child(3) { animation: bounce 0.9s ease-in-out infinite alternate 0.4s; height: 100%; }
+    .playing .audio-bar:nth-child(4) { animation: bounce 1.3s ease-in-out infinite alternate 0.1s; height: 75%; }
+    .playing .audio-bar:nth-child(5) { animation: bounce 0.7s ease-in-out infinite alternate 0.3s; height: 50%; }
+    @keyframes bounce {
+      0% { transform: scaleY(0.3); }
+      100% { transform: scaleY(1); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased bg-slate-50 text-slate-800">
+
+  <!-- TOP ANNOUNCEMENT BAR -->
+  <div class="bg-gradient-to-r from-emerald-800 via-teal-800 to-sky-900 text-white text-xs sm:text-sm py-1.5 px-4 text-center font-medium shadow-inner">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-2">
+      <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-200 border border-emerald-400/30">
+        Part 4
+      </span>
+      <span id="top-bar-text">GramCast AI • Hyperlocal Tamil Voice Advisory System</span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm transition-all duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-emerald-500/40 rounded-xl p-1">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-600 to-sky-600 flex items-center justify-center text-white shadow-md shadow-emerald-700/20 group-hover:scale-105 transition-transform duration-200">
+            <i data-lucide="sprout" class="w-6 h-6 stroke-[2.2]"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-1.5 font-sans">
+              GramCast <span class="bg-gradient-to-r from-sky-600 to-emerald-600 text-white text-xs px-2 py-0.5 rounded-md font-semibold tracking-wider">AI</span>
+            </span>
+            <span class="text-[11px] font-medium text-slate-500 tracking-wide">Panchayat Micro-Weather Intelligence</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+          <a href="index.html" id="nav-home" class="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-slate-100/70 rounded-lg transition-colors flex items-center gap-1.5">
+            <i data-lucide="home" class="w-4 h-4"></i>
+            <span>Home</span>
+          </a>
+          <a href="weather.html" id="nav-weather" class="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-slate-100/70 rounded-lg transition-colors flex items-center gap-1.5">
+            <i data-lucide="cloud-sun" class="w-4 h-4 text-sky-600"></i>
+            <span>Weather</span>
+          </a>
+          <a href="advisory.html" id="nav-advisory" class="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-slate-100/70 rounded-lg transition-colors flex items-center gap-1.5">
+            <i data-lucide="clipboard-list" class="w-4 h-4 text-emerald-600"></i>
+            <span>Advisory</span>
+          </a>
+          <a href="voice.html" id="nav-voice" class="px-3.5 py-2 text-sm font-semibold text-emerald-700 bg-emerald-50/80 rounded-lg transition-colors border border-emerald-100 flex items-center gap-1.5">
+            <i data-lucide="volume-2" class="w-4 h-4 text-blue-600"></i>
+            <span>Voice Alert</span>
+          </a>
+          <a href="dashboard.html" id="nav-dashboard" class="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-slate-100/70 rounded-lg transition-colors flex items-center gap-1.5">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 text-indigo-600"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="history.html" id="nav-history" class="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-slate-100/70 rounded-lg transition-colors flex items-center gap-1.5">
+            <i data-lucide="history" class="w-4 h-4 text-emerald-600"></i>
+            <span>History</span>
+          </a>
+        </nav>
+
+        <!-- Right Tools: Farmer Profile, Notification Bell, Language Toggle & Mobile Hamburger -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Connected Farmer Profile Quick Badge -->
+          <button 
+            id="btn-header-farmer-profile" 
+            onclick="openFarmerProfileModal()" 
+            type="button"
+            class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-emerald-200 bg-emerald-50/80 hover:bg-emerald-100/80 text-slate-800 text-xs font-semibold shadow-sm transition-all cursor-pointer group"
+            title="Connected Farmer Profile — Click to view or edit"
+          >
+            <div class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] font-bold header-farmer-avatar">V</div>
+            <span class="font-bold text-slate-900 header-farmer-name">Vishnu</span>
+            <span class="text-slate-300">•</span>
+            <span class="text-emerald-700 font-medium truncate max-w-[130px] header-farmer-loc">Demo Panchayat</span>
+            <i data-lucide="edit-3" class="w-3 h-3 text-emerald-600 opacity-60 group-hover:opacity-100"></i>
+          </button>
+
+          <!-- Notification Bell Dropdown -->
+          <div class="relative">
+            <button 
+              id="notif-bell-btn" 
+              onclick="toggleNotificationMenu()" 
+              class="relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
+              aria-label="View notifications"
+            >
+              <i data-lucide="bell" class="w-5 h-5"></i>
+              <span id="notif-badge" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-600 text-white font-extrabold text-[10px] flex items-center justify-center border-2 border-white shadow-sm">
+                4
+              </span>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="notif-dropdown" class="hidden absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-slate-200/90 py-3 z-50 animate-fadeIn">
+              <div class="px-4 pb-2.5 mb-2 border-b border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🔔</span>
+                  <h4 class="font-extrabold text-sm text-slate-900">Notifications</h4>
+                </div>
+                <button onclick="markAllNotificationsRead()" class="text-[11px] font-bold text-emerald-700 hover:underline cursor-pointer">
+                  Mark all as read
+                </button>
+              </div>
+
+              <!-- Notification items (The 4 exact required notifications) -->
+              <div class="space-y-1 px-2 max-h-80 overflow-y-auto">
+                <div class="notif-item p-2.5 rounded-xl hover:bg-slate-50 transition-colors flex items-start gap-3 bg-emerald-50/40 border border-emerald-100/60">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 text-sm">🌧️</div>
+                  <div class="flex-grow">
+                    <p class="text-xs font-bold text-slate-800 leading-snug">Heavy rain advisory generated.</p>
+                    <span class="text-[10px] text-slate-400 font-medium">Demo Panchayat • Just now</span>
+                  </div>
+                  <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0 mt-1.5 notif-dot"></span>
+                </div>
+
+                <div class="notif-item p-2.5 rounded-xl hover:bg-slate-50 transition-colors flex items-start gap-3 bg-blue-50/40 border border-blue-100/60">
+                  <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 mt-0.5 text-sm">🎙️</div>
+                  <div class="flex-grow">
+                    <p class="text-xs font-bold text-slate-800 leading-snug">Tamil voice message ready.</p>
+                    <span class="text-[10px] text-slate-400 font-medium">15s synthesized audio • 2 mins ago</span>
+                  </div>
+                  <span class="w-2 h-2 rounded-full bg-blue-600 shrink-0 mt-1.5 notif-dot"></span>
+                </div>
+
+                <div class="notif-item p-2.5 rounded-xl hover:bg-slate-50 transition-colors flex items-start gap-3 bg-emerald-50/40 border border-emerald-100/60">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 text-sm">📱</div>
+                  <div class="flex-grow">
+                    <p class="text-xs font-bold text-slate-800 leading-snug">WhatsApp delivery completed.</p>
+                    <span class="text-[10px] text-slate-400 font-medium">To +91 XXXXX XXXXX • 5 mins ago</span>
+                  </div>
+                  <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0 mt-1.5 notif-dot"></span>
+                </div>
+
+                <div class="notif-item p-2.5 rounded-xl hover:bg-slate-50 transition-colors flex items-start gap-3 bg-sky-50/40 border border-sky-100/60">
+                  <div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center shrink-0 mt-0.5 text-sm">☎️</div>
+                  <div class="flex-grow">
+                    <p class="text-xs font-bold text-slate-800 leading-snug">IVR call completed.</p>
+                    <span class="text-[10px] text-slate-400 font-medium">Auto-call verified • 10 mins ago</span>
+                  </div>
+                  <span class="w-2 h-2 rounded-full bg-sky-600 shrink-0 mt-1.5 notif-dot"></span>
+                </div>
+              </div>
+
+              <div class="px-4 pt-2.5 mt-2 border-t border-slate-100 text-center">
+                <a href="history.html" class="text-[11px] font-bold text-emerald-700 hover:underline">View All Advisory History →</a>
+              </div>
+            </div>
+          </div>
+
+          <a href="advisory.html" id="btn-header-advisory" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 transition-colors shadow-sm">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5 text-emerald-600"></i>
+            <span id="label-back-advisory">Back to Advisory</span>
+          </a>
+
+          <!-- Language Toggle -->
+          <div class="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200">
+            <button 
+              id="lang-en" 
+              onclick="setLanguage('en')" 
+              class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all duration-200 bg-white text-emerald-800 shadow-sm"
+              title="Switch to English"
+            >
+              EN
+            </button>
+            <button 
+              id="lang-ta" 
+              onclick="setLanguage('ta')" 
+              class="px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200"
+              title="தமிழுக்கு மாறவும்"
+            >
+              தமிழ்
+            </button>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none" aria-label="Toggle navigation menu">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-4 space-y-1 shadow-lg">
+      <div class="pb-2 border-b border-slate-100">
+        <button onclick="openFarmerProfileModal()" type="button" class="w-full text-left px-3 py-2 rounded-xl text-xs font-bold text-emerald-900 bg-emerald-50 border border-emerald-200 flex items-center justify-between">
+          <span class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold header-farmer-avatar">V</span>
+            <span>Farmer: <strong class="header-farmer-name">Vishnu</strong> (<span class="header-farmer-loc">Demo Panchayat</span>)</span>
+          </span>
+          <span class="text-xs text-emerald-700 font-semibold flex items-center gap-0.5">
+            <span>Edit</span>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+          </span>
+        </button>
+      </div>
+      <a href="index.html" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Home</a>
+      <a href="weather.html" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Weather</a>
+      <a href="advisory.html" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Advisory</a>
+      <a href="voice.html" class="block px-3 py-2.5 rounded-lg text-base font-semibold text-emerald-700 bg-emerald-50">Voice Alert</a>
+      <a href="dashboard.html" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Dashboard</a>
+      <a href="history.html" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">History</a>
+    </div>
+  </header>
+
+  <!-- MAIN BODY -->
+  <main class="flex-grow py-8 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full">
+    
+    <!-- SELECTED LOCATION BANNER (Required) -->
+    <section class="mb-6">
+      <div class="bg-white rounded-2xl border border-slate-200/90 card-shadow p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden">
+        <!-- Accent stripe -->
+        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-blue-600 via-teal-500 to-emerald-600"></div>
+
+        <div class="pl-2 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 flex items-center justify-center shrink-0 shadow-sm">
+            <i data-lucide="map-pin" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-0.5" id="label-loc-header">Target Panchayat Broadcast</div>
+            <div class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight" id="display-panchayat">
+              Demo Panchayat
+            </div>
+            <div class="text-xs sm:text-sm font-semibold text-slate-500 mt-0.5" id="display-hierarchy">
+              Needamangalam Block • Thiruvarur District
+            </div>
+            <!-- Connected Farmer Badge in Banner -->
+            <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+              <button onclick="openFarmerProfileModal()" type="button" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 transition-colors cursor-pointer" title="Edit Connected Farmer Profile">
+                <i data-lucide="user" class="w-3 h-3 text-blue-600"></i>
+                <span id="loc-farmer">Farmer: Vishnu</span>
+                <span class="text-slate-300">•</span>
+                <span id="loc-crop" class="text-emerald-700 font-extrabold">Paddy (Samba)</span>
+                <i data-lucide="edit-3" class="w-2.5 h-2.5 text-blue-600 opacity-60"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pl-2 sm:pl-0 flex items-center gap-2 sm:gap-3 flex-wrap">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+            <span id="badge-broadcast-ready">Audio Ready</span>
+          </span>
+          <button onclick="openFarmerProfileModal()" type="button" class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 transition-colors cursor-pointer" title="Edit Farmer Profile">
+            <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+            <span>Farmer Profile</span>
+          </button>
+          <a href="index.html" class="text-xs text-slate-500 hover:text-emerald-700 font-medium underline underline-offset-2 ml-1" id="link-change-panchayat">
+            Change
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE TITLE -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold mb-2">
+        <i data-lucide="radio" class="w-3.5 h-3.5 text-blue-600 animate-pulse"></i>
+        <span id="title-tag">Localized Voice Bulletin</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 mb-2" id="page-title">
+        Farmer Voice Advisory
+      </h1>
+      <!-- Connected Farmer Personalization Sub-heading -->
+      <div class="mb-3">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-blue-50 border border-blue-200/90 text-xs sm:text-sm font-semibold text-blue-900 shadow-sm" id="personalized-voice-banner">
+          <i data-lucide="volume-2" class="w-4 h-4 text-blue-600"></i>
+          <span>Tamil voice alert generated for <strong id="sub-farmer-name">Vishnu</strong> • <strong id="sub-farmer-crop">Paddy (Samba)</strong> (<span id="sub-panchayat-name">Demo Panchayat</span>)</span>
+        </span>
+      </div>
+      <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto" id="page-subtitle">
+        Zero-barrier voice notifications delivered directly to farmers in clear spoken Tamil.
+      </p>
+    </div>
+
+    <!-- LARGE TAMIL ADVISORY CARD (Required) -->
+    <section class="mb-10">
+      <div class="bg-gradient-to-b from-white via-blue-50/20 to-emerald-50/20 rounded-3xl border-2 border-slate-200 voice-glow p-6 sm:p-10 relative overflow-hidden transition-all">
+        
+        <!-- Subtle Top Color Stripe -->
+        <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-600 via-teal-500 to-emerald-600"></div>
+
+        <!-- Header pill inside card -->
+        <div class="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200/80">
+          <div class="flex items-center gap-2">
+            <span class="p-1.5 rounded-lg bg-blue-100 text-blue-800">
+              <i data-lucide="volume-2" class="w-5 h-5"></i>
+            </span>
+            <span class="font-extrabold text-sm sm:text-base text-slate-800 uppercase tracking-wider" id="card-header-label">
+              Tamil Audio Message (தமிழ் குரல் செய்தி)
+            </span>
+          </div>
+          <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 border border-slate-200">
+            Regional Dialect
+          </span>
+        </div>
+
+        <!-- THE EXACT REQUIRED TAMIL MESSAGE -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-sm mb-8 text-center sm:text-left">
+          <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 leading-relaxed font-sans" id="tamil-speech-text" style="font-family: 'Noto Sans Tamil', sans-serif;">
+            "வணக்கம்! இன்று பிற்பகல் 3 மணிக்குப் பிறகு உங்கள் பஞ்சாயத்தில் கனமழை பெய்ய வாய்ப்பு உள்ளது. பூச்சிக்கொல்லி மருந்து தெளிப்பதைத் தவிர்க்கவும்."
+          </p>
+        </div>
+
+        <!-- LARGE CIRCULAR BUTTON IN THE CENTER (Required) -->
+        <div class="flex flex-col items-center justify-center my-6">
+          <button 
+            type="button" 
+            onclick="toggleAudioPlayback()" 
+            id="btn-play-voice-circle" 
+            class="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white flex flex-col items-center justify-center shadow-xl play-btn-pulse cursor-pointer group transition-all"
+            aria-label="Play Voice Advisory"
+          >
+            <i data-lucide="play" class="w-9 h-9 fill-white ml-1 group-hover:scale-110 transition-transform" id="circle-play-icon"></i>
+            <span class="text-[11px] sm:text-xs font-black tracking-widest mt-1 uppercase" id="circle-btn-text">
+              PLAY VOICE
+            </span>
+          </button>
+        </div>
+
+        <!-- METADATA BADGES (Required: Language: Tamil, Duration: ~15 seconds, Status: Ready) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl mx-auto mb-8 text-center">
+          
+          <div class="bg-white rounded-xl p-3 border border-slate-200/90 shadow-sm flex items-center justify-center gap-2">
+            <i data-lucide="languages" class="w-4 h-4 text-blue-600"></i>
+            <span class="text-xs text-slate-500" id="meta-lang-label">Language:</span>
+            <strong class="text-xs font-bold text-slate-800" id="meta-lang-val">Tamil (தமிழ்)</strong>
+          </div>
+
+          <div class="bg-white rounded-xl p-3 border border-slate-200/90 shadow-sm flex items-center justify-center gap-2">
+            <i data-lucide="clock" class="w-4 h-4 text-emerald-600"></i>
+            <span class="text-xs text-slate-500" id="meta-dur-label">Duration:</span>
+            <strong class="text-xs font-bold text-slate-800" id="meta-dur-val">~15 seconds</strong>
+          </div>
+
+          <div class="bg-white rounded-xl p-3 border border-slate-200/90 shadow-sm flex items-center justify-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500" id="meta-status-dot"></span>
+            <span class="text-xs text-slate-500" id="meta-status-label">Status:</span>
+            <strong class="text-xs font-bold text-emerald-700" id="meta-status-val">Ready</strong>
+          </div>
+
+        </div>
+
+        <!-- SIMPLE AUDIO PLAYER STYLE INTERFACE (Required: ▶ Play ━━━━━━━━━━━━ 00:00 / 00:15) -->
+        <div class="max-w-xl mx-auto bg-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-lg mb-8">
+          
+          <div class="flex items-center justify-between gap-4">
+            
+            <!-- Play/Pause Button -->
+            <button 
+              type="button" 
+              onclick="toggleAudioPlayback()" 
+              id="player-toggle-btn" 
+              class="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-500 flex items-center justify-center shrink-0 transition-colors cursor-pointer text-white"
+            >
+              <i data-lucide="play" class="w-5 h-5 fill-white ml-0.5" id="player-icon"></i>
+            </button>
+
+            <!-- Audio Wave Animation Indicator -->
+            <div id="player-wave" class="audio-wave text-blue-400 shrink-0">
+              <span class="audio-bar" style="height: 40%;"></span>
+              <span class="audio-bar" style="height: 70%;"></span>
+              <span class="audio-bar" style="height: 100%;"></span>
+              <span class="audio-bar" style="height: 60%;"></span>
+              <span class="audio-bar" style="height: 30%;"></span>
+            </div>
+
+            <!-- Progress Bar: ━━━━━━━━━━━━ -->
+            <div class="flex-grow flex flex-col justify-center">
+              <div class="relative w-full h-2.5 bg-slate-700 rounded-full overflow-hidden cursor-pointer" onclick="seekAudio(event)" id="progress-container">
+                <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 to-emerald-400 rounded-full transition-all duration-100" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Timer: 00:00 / 00:15 -->
+            <div class="text-xs font-mono font-bold text-slate-300 tracking-wider shrink-0" id="player-timer">
+              00:00 / 00:15
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ENGLISH TRANSLATION (Required: Below the Tamil message) -->
+        <div class="bg-slate-50/90 rounded-2xl p-5 sm:p-6 border border-slate-200">
+          <div class="flex items-center gap-2 mb-2 text-slate-600 font-bold text-xs uppercase tracking-wider">
+            <i data-lucide="file-text" class="w-4 h-4 text-emerald-600"></i>
+            <span id="trans-title">English Translation</span>
+          </div>
+          <p class="text-slate-800 text-base sm:text-lg font-medium leading-relaxed" id="trans-text">
+            "Heavy rain is expected in your Panchayat today after 3 PM. Avoid spraying pesticide."
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION: ADVISORY DELIVERY (Part 6 Enhancement) -->
+    <section class="mb-10" id="advisory-delivery-section">
+      
+      <div class="mb-6 text-center sm:text-left">
+        <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+          <i data-lucide="radio-tower" class="w-3.5 h-3.5"></i>
+          <span>Part 6 • Live Simulation</span>
+        </div>
+        <h3 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight" id="delivery-title">
+          Advisory Delivery
+        </h3>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1" id="delivery-subtitle">
+          Demonstrate how the generated Tamil advisory is delivered directly to rural farmers through digital and cellular channels.
+        </p>
+      </div>
+
+      <!-- Two Large Interactive Delivery Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        
+        <!-- CARD 1: 📱 WhatsApp Voice Message -->
+        <div class="bg-white rounded-2xl border-2 border-emerald-200 card-shadow p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 relative overflow-hidden" id="card-whatsapp">
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+
+          <div>
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-2xl shadow-sm border border-emerald-100">
+                📱
+              </div>
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                <span>Direct Audio Note</span>
+              </span>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h4 class="text-xl font-black text-slate-900 mb-1" id="wa-card-title">
+              WhatsApp Voice Message
+            </h4>
+            <p class="text-sm text-slate-600 font-medium mb-5" id="wa-card-sub">
+              "Send the Tamil advisory directly to the farmer."
+            </p>
+
+            <!-- Interactive Button -->
+            <div class="mb-4">
+              <button 
+                type="button" 
+                id="btn-send-whatsapp" 
+                onclick="simulateWhatsApp()" 
+                class="w-full py-3.5 px-5 rounded-xl font-bold text-sm text-white bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] shadow-md shadow-emerald-700/20 transition-all flex items-center justify-center gap-2.5 cursor-pointer"
+              >
+                <i data-lucide="send" class="w-4 h-4" id="wa-btn-icon"></i>
+                <span id="wa-btn-text">Send Voice Message</span>
+              </button>
+            </div>
+
+            <!-- SIMULATED WHATSAPP DETAILS RESULT BOX -->
+            <div id="wa-result-box" class="hidden bg-emerald-50/90 rounded-2xl p-5 border-2 border-emerald-300 space-y-3.5 animate-fadeIn">
+              
+              <div class="flex items-center justify-between border-b border-emerald-200 pb-2">
+                <span class="text-xs font-extrabold text-emerald-900 flex items-center gap-1.5" id="wa-res-success">
+                  ✅ Voice message sent successfully
+                </span>
+                <span class="text-[11px] font-semibold text-emerald-700 bg-white px-2 py-0.5 rounded-md border border-emerald-200" id="wa-res-timestamp">
+                  Just now
+                </span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="bg-white/90 p-2.5 rounded-lg border border-emerald-100">
+                  <span class="text-slate-400 block text-[10px] font-bold uppercase" id="wa-lbl-rec">Recipient:</span>
+                  <strong class="font-mono text-slate-800 font-bold" id="wa-val-recipient">+91 98401 23456 (Vishnu)</strong>
+                </div>
+                <div class="bg-white/90 p-2.5 rounded-lg border border-emerald-100">
+                  <span class="text-slate-400 block text-[10px] font-bold uppercase" id="wa-lbl-lang">Language:</span>
+                  <strong class="text-slate-800 font-bold" id="wa-val-lang">Tamil</strong>
+                </div>
+              </div>
+
+              <!-- Message preview -->
+              <div class="bg-white/95 p-3 rounded-xl border border-emerald-200 text-xs">
+                <span class="text-slate-400 block text-[10px] font-bold uppercase mb-1" id="wa-lbl-msg">Message:</span>
+                <p class="font-semibold text-slate-800 leading-relaxed font-sans" id="wa-val-msg" style="font-family: 'Noto Sans Tamil', sans-serif;">
+                  "வணக்கம்! இன்று பிற்பகல் 3 மணிக்குப் பிறகு உங்கள் பஞ்சாயத்தில் கனமழை பெய்ய வாய்ப்பு உள்ளது. பூச்சிக்கொல்லி மருந்து தெளிப்பதைத் தவிர்க்கவும்."
+                </p>
+              </div>
+
+              <div class="flex items-center justify-between text-xs pt-1">
+                <div class="flex items-center gap-1 text-emerald-800 font-bold">
+                  <span id="wa-lbl-status">Status:</span>
+                  <span class="px-2 py-0.5 rounded bg-emerald-200 text-emerald-900 font-extrabold text-[11px]" id="wa-val-status">Delivered</span>
+                </div>
+                <button type="button" onclick="resetWhatsApp()" class="text-[11px] text-emerald-700 hover:underline font-semibold" id="wa-btn-retry">
+                  ↺ Re-send
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+            <span>Official WhatsApp Business Bot</span>
+            <span class="text-emerald-700 font-semibold">Instant Push</span>
+          </div>
+        </div>
+
+        <!-- CARD 2: ☎️ AUTOMATED IVR CALL -->
+        <div class="bg-white rounded-2xl border-2 border-sky-200 card-shadow p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 relative overflow-hidden" id="card-ivr">
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-sky-500 to-blue-600"></div>
+
+          <div>
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-700 flex items-center justify-center text-2xl shadow-sm border border-sky-100">
+                ☎️
+              </div>
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-sky-100 text-sky-800">
+                <span class="w-1.5 h-1.5 rounded-full bg-sky-600"></span>
+                <span>Any 2G Mobile Phone</span>
+              </span>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h4 class="text-xl font-black text-slate-900 mb-1" id="ivr-card-title">
+              Automated IVR Call
+            </h4>
+            <p class="text-sm text-slate-600 font-medium mb-5" id="ivr-card-sub">
+              "Deliver the advisory through an automated phone call."
+            </p>
+
+            <!-- Interactive Button -->
+            <div class="mb-4">
+              <button 
+                type="button" 
+                id="btn-start-ivr" 
+                onclick="simulateIVRCall()" 
+                class="w-full py-3.5 px-5 rounded-xl font-bold text-sm text-white bg-sky-600 hover:bg-sky-700 active:scale-[0.99] shadow-md shadow-sky-700/20 transition-all flex items-center justify-center gap-2.5 cursor-pointer"
+              >
+                <i data-lucide="phone-call" class="w-4 h-4" id="ivr-btn-icon"></i>
+                <span id="ivr-btn-text">Start IVR Call</span>
+              </button>
+            </div>
+
+            <!-- SIMULATED PHONE CALL STYLE INTERFACE -->
+            <div id="ivr-result-box" class="hidden bg-slate-900 text-white rounded-2xl p-5 border-2 border-sky-400 space-y-3.5 shadow-inner animate-fadeIn">
+              
+              <!-- Call header bar -->
+              <div class="flex items-center justify-between border-b border-slate-700 pb-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" id="ivr-call-pulse"></span>
+                  <span class="text-xs font-extrabold tracking-wider" id="ivr-call-state-title">
+                    Calling Farmer
+                  </span>
+                </div>
+                <span class="text-[11px] font-mono text-slate-400 font-bold" id="ivr-timestamp">
+                  Just now
+                </span>
+              </div>
+
+              <!-- Recipient & Connecting status -->
+              <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex items-center justify-between">
+                <div>
+                  <div class="text-[10px] text-slate-400 uppercase font-bold" id="ivr-lbl-target">Farmer Cellular Line</div>
+                  <div class="font-mono text-base font-black text-sky-300" id="ivr-val-recipient">+91 98401 23456 (Vishnu)</div>
+                </div>
+                <div class="text-right">
+                  <span id="ivr-connect-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30">
+                    Connecting...
+                  </span>
+                </div>
+              </div>
+
+              <!-- Playing status & text -->
+              <div id="ivr-speech-pane" class="hidden bg-slate-800/90 p-3.5 rounded-xl border border-sky-500/30 space-y-2">
+                <div class="flex items-center justify-between text-xs text-sky-300 font-bold">
+                  <span class="flex items-center gap-1.5" id="ivr-playing-text">
+                    <i data-lucide="volume-2" class="w-4 h-4 text-sky-400 animate-bounce"></i>
+                    <span>Playing Tamil Advisory...</span>
+                  </span>
+                  <span class="text-[10px] text-slate-400 font-normal">ta-IN Voice</span>
+                </div>
+                <p class="text-xs font-medium text-slate-200 leading-relaxed font-sans" id="ivr-val-msg" style="font-family: 'Noto Sans Tamil', sans-serif;">
+                  "வணக்கம்! இன்று பிற்பகல் 3 மணிக்குப் பிறகு உங்கள் பஞ்சாயத்தில் கனமழை பெய்ய வாய்ப்பு உள்ளது. பூச்சிக்கொல்லி மருந்து தெளிப்பதைத் தவிர்க்கவும்."
+                </p>
+
+                <!-- Audio progress bar: ▶ ━━━━━━━━━━━ 00:15 -->
+                <div class="pt-2 flex items-center gap-3 text-xs font-mono font-bold text-slate-300">
+                  <span class="text-sky-400">▶</span>
+                  <div class="flex-grow bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div id="ivr-audio-bar" class="h-full bg-gradient-to-r from-sky-400 to-emerald-400 transition-all duration-300 rounded-full" style="width: 15%;"></div>
+                  </div>
+                  <span id="ivr-audio-timer" class="text-[11px] text-sky-300">00:15</span>
+                </div>
+              </div>
+
+              <!-- Final Call Completed Result -->
+              <div id="ivr-completed-pane" class="hidden pt-1 border-t border-slate-700/80 flex items-center justify-between text-xs">
+                <div>
+                  <span class="font-extrabold text-emerald-400 flex items-center gap-1" id="ivr-res-completed">
+                    ✅ Call Completed
+                  </span>
+                  <span class="text-[11px] text-slate-300 block mt-0.5" id="ivr-res-status">
+                    Advisory delivered successfully
+                  </span>
+                </div>
+                <button type="button" onclick="resetIVRCall()" class="text-[11px] text-sky-300 hover:underline font-semibold" id="ivr-btn-retry">
+                  ↺ Call Again
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+            <span>Automated Outbound Dialing (OBD)</span>
+            <span class="text-sky-700 font-semibold">Toll-Free Voice</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- DELIVERY STATUS TABLE (Required) -->
+      <div class="bg-white rounded-2xl border border-slate-200 card-shadow p-6 mb-6">
+        <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
+          <div>
+            <h4 class="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2" id="status-table-heading">
+              <i data-lucide="activity" class="w-4 h-4 text-emerald-600"></i>
+              <span>Delivery Status</span>
+            </h4>
+            <p class="text-xs text-slate-500 mt-0.5" id="status-table-sub">
+              Live broadcast verification matrix across agricultural communication channels.
+            </p>
+          </div>
+          <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-lg border border-slate-200" id="status-table-sync">
+            Synced: Demo Panchayat
+          </span>
+        </div>
+
+        <!-- Table: Channel | Recipient | Language | Status -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead>
+              <tr class="border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[11px] bg-slate-50/70">
+                <th class="py-3 px-4 rounded-l-lg" id="th-channel">Channel</th>
+                <th class="py-3 px-4" id="th-recipient">Recipient</th>
+                <th class="py-3 px-4" id="th-language">Language</th>
+                <th class="py-3 px-4 rounded-r-lg" id="th-status">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-medium">
+              <!-- Row 1: WhatsApp -->
+              <tr id="row-whatsapp" class="hover:bg-slate-50/80 transition-colors">
+                <td class="py-3.5 px-4 font-bold text-slate-800 flex items-center gap-2">
+                  <span class="text-base">📱</span>
+                  <span id="tbl-chan-wa">WhatsApp</span>
+                </td>
+                <td class="py-3.5 px-4 font-mono text-slate-600 font-bold" id="tbl-rec-wa">+91 98401 23456 (Vishnu)</td>
+                <td class="py-3.5 px-4 text-slate-700" id="tbl-lang-wa">Tamil</td>
+                <td class="py-3.5 px-4" id="tbl-status-wa">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                    <span>✅ Delivered</span>
+                  </span>
+                </td>
+              </tr>
+              <!-- Row 2: IVR Call -->
+              <tr id="row-ivr" class="hover:bg-slate-50/80 transition-colors">
+                <td class="py-3.5 px-4 font-bold text-slate-800 flex items-center gap-2">
+                  <span class="text-base">☎️</span>
+                  <span id="tbl-chan-ivr">IVR Call</span>
+                </td>
+                <td class="py-3.5 px-4 font-mono text-slate-600 font-bold" id="tbl-rec-ivr">+91 98401 23456 (Vishnu)</td>
+                <td class="py-3.5 px-4 text-slate-700" id="tbl-lang-ivr">Tamil</td>
+                <td class="py-3.5 px-4" id="tbl-status-ivr">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-sky-100 text-sky-800 border border-sky-200">
+                    <span>✅ Completed</span>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- HIGHLIGHT CALLOUT: "No application or login is required for the farmer." (Preserved) -->
+      <div class="bg-emerald-50/80 border-2 border-emerald-300 rounded-2xl p-5 sm:p-6 flex items-center gap-4 text-emerald-950 shadow-sm mb-6">
+        <div class="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-md">
+          <i data-lucide="check-check" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="font-extrabold text-base sm:text-lg text-emerald-950" id="callout-text">
+            No application or login is required for the farmer.
+          </div>
+          <p class="text-xs sm:text-sm text-emerald-800 mt-0.5" id="callout-sub">
+            The broadcast reaches registered Panchayat farmers through standard cellular calls and WhatsApp.
+          </p>
+        </div>
+      </div>
+
+      <!-- DEMO NOTICE (Required: small information box at bottom) -->
+      <div class="bg-slate-100/90 rounded-2xl p-4 sm:p-5 border border-slate-300/80 text-xs text-slate-600 flex items-start gap-3 shadow-sm">
+        <div class="w-8 h-8 rounded-lg bg-slate-200 text-slate-700 flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">
+          <i data-lucide="info" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <strong class="text-slate-800 font-bold text-sm block mb-0.5" id="demo-notice-title">
+            Demo Mode
+          </strong>
+          <p class="leading-relaxed" id="demo-notice-text">
+            WhatsApp and IVR delivery are simulated for this prototype. No real message or phone call is placed.
+          </p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- WORKFLOW NAVIGATION LINKS -->
+    <section class="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
+      <div class="flex items-center gap-3">
+        <a href="advisory.html" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-emerald-700 transition-colors">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span id="link-back-advisory">Back to Advisory</span>
+        </a>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="weather.html" class="inline-flex items-center gap-2 text-sm font-semibold text-sky-700 hover:text-sky-800 transition-colors">
+          <i data-lucide="cloud-sun" class="w-4 h-4"></i>
+          <span id="link-view-weather">View Weather Details</span>
+        </a>
+        <span class="text-slate-300 hidden sm:inline">•</span>
+        <a href="index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800 transition-colors">
+          <i data-lucide="home" class="w-4 h-4"></i>
+          <span id="link-back-home">Home</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 py-8 px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500 mt-12">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-6 h-6 rounded-md bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">
+          G
+        </div>
+        <span class="font-semibold text-slate-700">GramCast AI</span>
+        <span>— Hyperlocal Voice Alert Module</span>
+      </div>
+      <div>
+        <span id="footer-part-text">Part 4: Farmer Voice Advisory & Multi-Channel Delivery</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT: INTERACTIVE AUDIO PLAYER, LANGUAGE TOGGLE & QUERY ROUTING -->
+  <script>
+    // Bilingual dictionary for English and Tamil
+    const translations = {
+      en: {
+        topBar: "GramCast AI • Hyperlocal Tamil Voice Advisory System",
+        navHome: "Home",
+        navWeather: "Weather",
+        navAdvisory: "Advisory",
+        navVoice: "Voice Alert",
+        navDashboard: "Dashboard",
+        navHistory: "History",
+        btnBackAdvisory: "Back to Advisory",
+        labelLocHeader: "Target Panchayat Broadcast",
+        badgeReady: "Audio Ready",
+        linkChange: "Change",
+        titleTag: "Localized Voice Bulletin",
+        pageTitle: "Farmer Voice Advisory",
+        pageSubtitle: "Zero-barrier voice notifications delivered directly to farmers in clear spoken Tamil.",
+        cardHeaderLabel: "Tamil Audio Message (தமிழ் குரல் செய்தி)",
+        circleBtnPlay: "PLAY VOICE",
+        circleBtnPause: "PAUSE VOICE",
+        metaLangLabel: "Language:",
+        metaLangVal: "Tamil (தமிழ்)",
+        metaDurLabel: "Duration:",
+        metaDurVal: "~15 seconds",
+        metaStatusLabel: "Status:",
+        metaStatusReady: "Ready",
+        metaStatusPlaying: "Playing...",
+        transTitle: "English Translation",
+        transText: '"Heavy rain is expected in your Panchayat today after 3 PM. Avoid spraying pesticide."',
+        deliveryTitle: "Advisory Delivery",
+        deliverySubtitle: "Demonstrate how the generated Tamil advisory is delivered directly to rural farmers through digital and cellular channels.",
+        waCardTitle: "WhatsApp Voice Message",
+        waCardSub: '"Send the Tamil advisory directly to the farmer."',
+        waBtnSend: "Send Voice Message",
+        ivrCardTitle: "Automated IVR Call",
+        ivrCardSub: '"Deliver the advisory through an automated phone call."',
+        ivrBtnStart: "Start IVR Call",
+        statusTableHeading: "Delivery Status",
+        statusTableSub: "Live broadcast verification matrix across agricultural communication channels.",
+        statusTableSync: "Synced: Demo Panchayat",
+        thChannel: "Channel",
+        thRecipient: "Recipient",
+        thLanguage: "Language",
+        thStatus: "Status",
+        tblChanWa: "WhatsApp",
+        tblChanIvr: "IVR Call",
+        tblLangWa: "Tamil",
+        tblLangIvr: "Tamil",
+        demoNoticeTitle: "Demo Mode",
+        demoNoticeText: "WhatsApp and IVR delivery are simulated for this prototype. No real message or phone call is placed.",
+        calloutText: "No application or login is required for the farmer.",
+        calloutSub: "The broadcast reaches registered Panchayat farmers through standard cellular calls and WhatsApp.",
+        linkBackAdvisory: "Back to Advisory",
+        linkViewWeather: "View Weather Details",
+        linkHome: "Home",
+        footerText: "Part 4 & Part 6: Farmer Voice Advisory & Delivery Simulation"
+      },
+      ta: {
+        topBar: "கிராம்காஸ்ட் AI • கிராமங்களுக்கான நேரடி தமிழ் குரல் வழி அறிவிப்பு",
+        navHome: "முகப்பு",
+        navWeather: "வானிலை",
+        navAdvisory: "வேளாண் ஆலோசனை",
+        navVoice: "குரல் எச்சரிக்கை",
+        navDashboard: "கட்டுப்பாட்டு பலகை",
+        navHistory: "வரலாறு",
+        btnBackAdvisory: "ஆலோசனைக்குத் திரும்பு",
+        labelLocHeader: "ஒலிபரப்பு செய்யப்படும் ஊராட்சி",
+        badgeReady: "ஒலி தயார்",
+        linkChange: "மாற்ற",
+        titleTag: "வட்டார குரல் சுற்றறிக்கை",
+        pageTitle: "விவசாயிகளுக்கான குரல் எச்சரிக்கை",
+        pageSubtitle: "விவசாயிகளுக்கு நேரடியான மற்றும் தெளிவான தமிழில் வழங்கப்படும் ஒலி வடிவிலான வழிகாட்டல்.",
+        cardHeaderLabel: "தமிழ் குரல் செய்தி (Tamil Audio Message)",
+        circleBtnPlay: "ஒலிக்கச் செய்",
+        circleBtnPause: "நிறுத்து",
+        metaLangLabel: "மொழி:",
+        metaLangVal: "தமிழ் (Tamil)",
+        metaDurLabel: "கால அளவு:",
+        metaDurVal: "~15 வினாடிகள்",
+        metaStatusLabel: "நிலை:",
+        metaStatusReady: "தயாராக உள்ளது",
+        metaStatusPlaying: "ஒலிக்கிறது...",
+        transTitle: "ஆங்கில மொழிபெயர்ப்பு (English Translation)",
+        transText: '"Heavy rain is expected in your Panchayat today after 3 PM. Avoid spraying pesticide."',
+        deliveryTitle: "ஆலோசனை விநியோகம் (Advisory Delivery)",
+        deliverySubtitle: "விவசாயிகளுக்கு நேரடியான மற்றும் தானியங்கி முறைகளில் ஆலோசனை சென்றடைவதை செயல்முறை விளக்கம் செய்கிறது.",
+        waCardTitle: "வாட்ஸ்அப் குரல் செய்தி",
+        waCardSub: '"விவசாயிக்கு நேரடியாக தமிழ் குரல் செய்தியை அனுப்பவும்."',
+        waBtnSend: "குரல் செய்தியை அனுப்பவும்",
+        ivrCardTitle: "தானியங்கி தொலைபேசி அழைப்பு (IVR)",
+        ivrCardSub: '"தானியங்கி தொலைபேசி அழைப்பு மூலம் ஆலோசனையை வழங்கவும்."',
+        ivrBtnStart: "தானியங்கி அழைப்பைத் தொடங்கவும்",
+        statusTableHeading: "விநியோக நிலை (Delivery Status)",
+        statusTableSub: "வேளாண் தகவல் தொடர்பு வழிகளின் நேரடி ஒளிபரப்பு சரிபார்ப்பு அட்டவணை.",
+        statusTableSync: "இணைக்கப்பட்டது: மாதிரி ஊராட்சி",
+        thChannel: "தொடர்பு வழி (Channel)",
+        thRecipient: "பெறுநர் (Recipient)",
+        thLanguage: "மொழி (Language)",
+        thStatus: "நிலை (Status)",
+        tblChanWa: "வாட்ஸ்அப்",
+        tblChanIvr: "IVR அழைப்பு",
+        tblLangWa: "தமிழ்",
+        tblLangIvr: "தமிழ்",
+        demoNoticeTitle: "மாதிரி முறை (Demo Mode)",
+        demoNoticeText: "இந்த செயல்முறை விளக்கத்திற்காக மட்டுமே வாட்ஸ்அப் மற்றும் IVR அழைப்புகள் உருவகப்படுத்தப்பட்டுள்ளன. உண்மையான அழைப்புகளோ செய்திகளோ அனுப்பப்படவில்லை.",
+        calloutText: "விவசாயிகளுக்கு எந்தவொரு செயலியோ அல்லது உள்நுழைவோ தேவையில்லை.",
+        calloutSub: "சாதாரண 2G அடிப்படை போன்களிலும் வாட்ஸ்அப்பிலும் நேரடியாக ஒலி வடிவில் சென்றடைகிறது.",
+        linkBackAdvisory: "வேளாண் ஆலோசனைக்குத் திரும்பு",
+        linkViewWeather: "வானிலை விவரங்களைப் பார்க்கவும்",
+        linkHome: "முகப்பு",
+        footerText: "பகுதி 4 & 6: விவசாய குரல் எச்சரிக்கை & நேரடி விநியோக மாதிரி"
+      }
+    };
+
+    let currentLang = 'en';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      if (typeof saveFarmerProfile === 'function') {
+        const p = getFarmerProfile();
+        if (p && p.lang !== lang) {
+          saveFarmerProfile({ lang: lang });
+        }
+      }
+      const t = translations[lang];
+
+
+      // Update button toggle UI
+      const btnEn = document.getElementById('lang-en');
+      const btnTa = document.getElementById('lang-ta');
+      if (lang === 'en') {
+        btnEn.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all duration-200 bg-white text-emerald-800 shadow-sm";
+        btnTa.className = "px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200";
+      } else {
+        btnTa.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all duration-200 bg-white text-emerald-800 shadow-sm";
+        btnEn.className = "px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200";
+      }
+
+      // Context bar & Nav
+      document.getElementById('top-bar-text').textContent = t.topBar;
+      document.querySelector('#nav-home span').textContent = t.navHome;
+      document.querySelector('#nav-weather span').textContent = t.navWeather;
+      document.querySelector('#nav-advisory span').textContent = t.navAdvisory;
+      document.querySelector('#nav-voice span').textContent = t.navVoice;
+      document.querySelector('#nav-dashboard span').textContent = t.navDashboard;
+      if (document.querySelector('#nav-history span')) {
+        document.querySelector('#nav-history span').textContent = t.navHistory;
+      }
+      document.getElementById('label-back-advisory').textContent = t.btnBackAdvisory;
+
+      // Location
+      document.getElementById('label-loc-header').textContent = t.labelLocHeader;
+      document.getElementById('badge-broadcast-ready').textContent = t.badgeReady;
+      document.getElementById('link-change-panchayat').textContent = t.linkChange;
+
+      // Title
+      document.getElementById('title-tag').textContent = t.titleTag;
+      document.getElementById('page-title').textContent = t.pageTitle;
+      document.getElementById('page-subtitle').textContent = t.pageSubtitle;
+
+      // Card
+      document.getElementById('card-header-label').textContent = t.cardHeaderLabel;
+      if (!isPlaying) {
+        document.getElementById('circle-btn-text').textContent = t.circleBtnPlay;
+        document.getElementById('meta-status-val').textContent = t.metaStatusReady;
+      } else {
+        document.getElementById('circle-btn-text').textContent = t.circleBtnPause;
+        document.getElementById('meta-status-val').textContent = t.metaStatusPlaying;
+      }
+      document.getElementById('meta-lang-label').textContent = t.metaLangLabel;
+      document.getElementById('meta-lang-val').textContent = t.metaLangVal;
+      document.getElementById('meta-dur-label').textContent = t.metaDurLabel;
+      document.getElementById('meta-dur-val').textContent = t.metaDurVal;
+      document.getElementById('meta-status-label').textContent = t.metaStatusLabel;
+
+      // Translation
+      document.getElementById('trans-title').textContent = t.transTitle;
+      document.getElementById('trans-text').textContent = t.transText;
+
+      // Advisory Delivery Section (Part 6)
+      if (document.getElementById('delivery-title')) {
+        document.getElementById('delivery-title').textContent = t.deliveryTitle;
+        document.getElementById('delivery-subtitle').textContent = t.deliverySubtitle;
+        document.getElementById('wa-card-title').textContent = t.waCardTitle;
+        document.getElementById('wa-card-sub').textContent = t.waCardSub;
+        if (!waSent) {
+          document.getElementById('wa-btn-text').textContent = t.waBtnSend;
+        } else {
+          document.getElementById('wa-btn-text').textContent = (currentLang === 'ta' ? "✓ அனுப்பப்பட்டது" : "✓ Sent");
+        }
+        document.getElementById('ivr-card-title').textContent = t.ivrCardTitle;
+        document.getElementById('ivr-card-sub').textContent = t.ivrCardSub;
+        if (ivrState === 'idle') {
+          document.getElementById('ivr-btn-text').textContent = t.ivrBtnStart;
+        } else if (ivrState === 'completed') {
+          document.getElementById('ivr-btn-text').textContent = (currentLang === 'ta' ? "✓ அழைப்பு முடிவடைந்தது" : "✓ Call Completed");
+        }
+        document.getElementById('status-table-heading').querySelector('span').textContent = t.statusTableHeading;
+        document.getElementById('status-table-sub').textContent = t.statusTableSub;
+        document.getElementById('status-table-sync').textContent = t.statusTableSync;
+        document.getElementById('th-channel').textContent = t.thChannel;
+        document.getElementById('th-recipient').textContent = t.thRecipient;
+        document.getElementById('th-language').textContent = t.thLanguage;
+        document.getElementById('th-status').textContent = t.thStatus;
+        document.getElementById('tbl-chan-wa').textContent = t.tblChanWa;
+        document.getElementById('tbl-chan-ivr').textContent = t.tblChanIvr;
+        document.getElementById('tbl-lang-wa').textContent = t.tblLangWa;
+        document.getElementById('tbl-lang-ivr').textContent = t.tblLangIvr;
+        document.getElementById('demo-notice-title').textContent = t.demoNoticeTitle;
+        document.getElementById('demo-notice-text').textContent = t.demoNoticeText;
+      }
+      document.getElementById('callout-text').textContent = t.calloutText;
+      document.getElementById('callout-sub').textContent = t.calloutSub;
+
+      // Navigation links
+      document.getElementById('link-back-advisory').textContent = t.linkBackAdvisory;
+      document.getElementById('link-view-weather').textContent = t.linkViewWeather;
+      document.getElementById('link-back-home').textContent = t.linkHome;
+      document.getElementById('footer-part-text').textContent = t.footerText;
+
+      lucide.createIcons();
+    }
+
+    // AUDIO PLAYER LOGIC
+    let isPlaying = false;
+    let playbackSeconds = 0;
+    const totalSeconds = 15;
+    let timerInterval = null;
+
+    function toggleAudioPlayback() {
+      if (isPlaying) {
+        pauseAudio();
+      } else {
+        playAudio();
+      }
+    }
+
+    function playAudio() {
+      isPlaying = true;
+      const t = translations[currentLang];
+
+      // Update Play Button in circle
+      document.getElementById('circle-btn-text').textContent = t.circleBtnPause;
+      const iconContainer = document.getElementById('circle-play-icon');
+      iconContainer.setAttribute('data-lucide', 'pause');
+      iconContainer.classList.remove('ml-1');
+
+      // Update Mini Player
+      const playerIcon = document.getElementById('player-icon');
+      playerIcon.setAttribute('data-lucide', 'pause');
+      playerIcon.classList.remove('ml-0.5');
+      document.getElementById('player-wave').classList.add('playing');
+
+      // Update Status
+      document.getElementById('meta-status-val').textContent = t.metaStatusPlaying;
+      document.getElementById('meta-status-val').className = "text-xs font-bold text-blue-600";
+      document.getElementById('meta-status-dot').className = "w-2.5 h-2.5 rounded-full bg-blue-500 animate-ping";
+
+      // Browser Speech Synthesis for actual spoken Tamil
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const profile = (typeof getFarmerProfile === 'function') ? getFarmerProfile() : null;
+        const cropInfo = (profile && typeof GRAMCAST_CROPS !== 'undefined' && GRAMCAST_CROPS[profile.crop]) ? GRAMCAST_CROPS[profile.crop] : null;
+        const farmerName = profile ? profile.name : "விவசாயி";
+        const panchayatName = profile ? profile.panchayat : "மாதிரி ஊராட்சி";
+        const cropNameTa = cropInfo ? cropInfo.ta : "பயிர்";
+        const adviceTa = cropInfo ? cropInfo.adviceHeavyRain.ta : "பூச்சிக்கொல்லி மருந்து தெளிப்பதைத் தவிர்க்கவும்.";
+
+        const speechText = `வணக்கம் ${farmerName}! இன்று பிற்பகல் 3 மணிக்குப் பிறகு உங்கள் ${panchayatName} ஊராட்சியில் கனமழை பெய்ய வாய்ப்பு உள்ளது. உங்கள் ${cropNameTa} பயிரில்: ${adviceTa}`;
+        const utterance = new SpeechSynthesisUtterance(speechText);
+        utterance.lang = 'ta-IN';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+      }
+
+      // Timer progression
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        playbackSeconds += 1;
+        updatePlayerUI();
+
+        if (playbackSeconds >= totalSeconds) {
+          stopAudio();
+        }
+      }, 1000);
+
+      lucide.createIcons();
+    }
+
+    function pauseAudio() {
+      isPlaying = false;
+      clearInterval(timerInterval);
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      resetPlayerUIState();
+    }
+
+    function stopAudio() {
+      isPlaying = false;
+      clearInterval(timerInterval);
+      playbackSeconds = 0;
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      updatePlayerUI();
+      resetPlayerUIState();
+    }
+
+    function resetPlayerUIState() {
+      const t = translations[currentLang];
+      document.getElementById('circle-btn-text').textContent = t.circleBtnPlay;
+      const iconContainer = document.getElementById('circle-play-icon');
+      iconContainer.setAttribute('data-lucide', 'play');
+      iconContainer.classList.add('ml-1');
+
+      const playerIcon = document.getElementById('player-icon');
+      playerIcon.setAttribute('data-lucide', 'play');
+      playerIcon.classList.add('ml-0.5');
+      document.getElementById('player-wave').classList.remove('playing');
+
+      document.getElementById('meta-status-val').textContent = t.metaStatusReady;
+      document.getElementById('meta-status-val').className = "text-xs font-bold text-emerald-700";
+      document.getElementById('meta-status-dot').className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
+
+      lucide.createIcons();
+    }
+
+    function updatePlayerUI() {
+      const currentFormatted = `00:${playbackSeconds.toString().padStart(2, '0')}`;
+      const totalFormatted = `00:${totalSeconds.toString().padStart(2, '0')}`;
+      document.getElementById('player-timer').textContent = `${currentFormatted} / ${totalFormatted}`;
+
+      const progressPercent = (playbackSeconds / totalSeconds) * 100;
+      document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+    }
+
+    function seekAudio(event) {
+      const rect = event.currentTarget.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const width = rect.width;
+      const clickedPercent = Math.max(0, Math.min(1, clickX / width));
+      playbackSeconds = Math.round(clickedPercent * totalSeconds);
+      updatePlayerUI();
+    }
+
+    // ==========================================
+    // PART 6: ADVISORY DELIVERY SIMULATION LOGIC
+    // ==========================================
+
+    // 1. WhatsApp Delivery Simulation
+    let waSent = false;
+    function simulateWhatsApp() {
+      if (waSent) return;
+      const btn = document.getElementById('btn-send-whatsapp');
+
+      // Step 1: Loading state
+      btn.disabled = true;
+      btn.className = "w-full py-3.5 px-5 rounded-xl font-bold text-sm text-white bg-emerald-700 shadow-inner flex items-center justify-center gap-2.5 cursor-wait opacity-90";
+      btn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+        <span id="wa-btn-text">${currentLang === 'ta' ? "குரல் செய்தி அனுப்பப்படுகிறது..." : "Sending voice message..."}</span>
+      `;
+
+      // Step 2: Simulated transmission delay
+      setTimeout(() => {
+        waSent = true;
+
+        // Change button to: "✓ Sent"
+        btn.disabled = false;
+        btn.className = "w-full py-3.5 px-5 rounded-xl font-bold text-sm text-emerald-800 bg-emerald-100 border-2 border-emerald-400 shadow-sm flex items-center justify-center gap-2 cursor-pointer";
+        btn.innerHTML = `
+          <i data-lucide="check-check" class="w-4 h-4 text-emerald-700"></i>
+          <span id="wa-btn-text">${currentLang === 'ta' ? "✓ அனுப்பப்பட்டது" : "✓ Sent"}</span>
+        `;
+
+        // Unhide result box with details
+        const resultBox = document.getElementById('wa-result-box');
+        resultBox.classList.remove('hidden');
+
+        // Formatted timestamp
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('wa-res-timestamp').textContent = `Just now (${timeStr})`;
+
+        // Update Delivery Status Table row for WhatsApp
+        const statusCell = document.getElementById('tbl-status-wa');
+        statusCell.innerHTML = `
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 ring-2 ring-emerald-400/30 animate-pulse">
+            <span>✅ Delivered</span>
+            <span class="text-[10px] text-emerald-700 font-normal">Just now</span>
+          </span>
+        `;
+        document.getElementById('row-whatsapp').classList.add('bg-emerald-50/60');
+
+        lucide.createIcons();
+      }, 1100);
+    }
+
+    function resetWhatsApp() {
+      waSent = false;
+      const btn = document.getElementById('btn-send-whatsapp');
+      btn.disabled = false;
+      btn.className = "w-full py-3.5 px-5 rounded-xl font-bold text-sm text-white bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] shadow-md shadow-emerald-700/20 transition-all flex items-center justify-center gap-2.5 cursor-pointer";
+      btn.innerHTML = `
+        <i data-lucide="send" class="w-4 h-4" id="wa-btn-icon"></i>
+        <span id="wa-btn-text">${currentLang === 'ta' ? "குரல் செய்தியை அனுப்பவும்" : "Send Voice Message"}</span>
+      `;
+      document.getElementById('wa-result-box').classList.add('hidden');
+      document.getElementById('row-whatsapp').classList.remove('bg-emerald-50/60');
+      lucide.createIcons();
+    }
+
+    // 2. Automated IVR Call Delivery Simulation
+    let ivrState = 'idle'; // 'calling', 'connected', 'completed'
+    let ivrTimerInterval = null;
+
+    function simulateIVRCall() {
+      if (ivrState !== 'idle') return;
+      ivrState = 'calling';
+
+      const btn = document.getElementById('btn-start-ivr');
+      const resultBox = document.getElementById('ivr-result-box');
+      const callStateTitle = document.getElementById('ivr-call-state-title');
+      const connectBadge = document.getElementById('ivr-connect-badge');
+      const speechPane = document.getElementById('ivr-speech-pane');
+      const completedPane = document.getElementById('ivr-completed-pane');
+      const audioBar = document.getElementById('ivr-audio-bar');
+      const timestamp = document.getElementById('ivr-timestamp');
+
+      // Step 1: "📞 Calling..."
+      btn.disabled = true;
+      btn.className = "w-full py-3.5 px-5 rounded-xl font-bold text-sm text-white bg-sky-700 shadow-inner flex items-center justify-center gap-2.5 cursor-wait opacity-90";
+      btn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+        <span id="ivr-btn-text">${currentLang === 'ta' ? "📞 அழைப்பு போகிறது..." : "📞 Calling..."}</span>
+      `;
+
+      // Show phone-call style interface: "Calling Farmer", +91 XXXXX XXXXX, "Connecting..."
+      resultBox.classList.remove('hidden');
+      speechPane.classList.add('hidden');
+      completedPane.classList.add('hidden');
+      callStateTitle.textContent = "Calling Farmer";
+      connectBadge.textContent = "Connecting...";
+      connectBadge.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30 animate-pulse";
+      audioBar.style.width = "10%";
+
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      timestamp.textContent = `Just now (${timeStr})`;
+
+      // Step 2: 📞 "Call Connected" & "Playing Tamil Advisory..." (after 1000ms)
+      setTimeout(() => {
+        ivrState = 'connected';
+        callStateTitle.textContent = "📞 Call Connected";
+        connectBadge.textContent = "Connected";
+        connectBadge.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30";
+        speechPane.classList.remove('hidden');
+
+        // Optional natural speech synthesis for realism
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const profile = (typeof getFarmerProfile === 'function') ? getFarmerProfile() : null;
+          const cropInfo = (profile && typeof GRAMCAST_CROPS !== 'undefined' && GRAMCAST_CROPS[profile.crop]) ? GRAMCAST_CROPS[profile.crop] : null;
+          const farmerName = profile ? profile.name : "விவசாயி";
+          const panchayatName = profile ? profile.panchayat : "மாதிரி ஊராட்சி";
+          const cropNameTa = cropInfo ? cropInfo.ta : "பயிர்";
+          const adviceTa = cropInfo ? cropInfo.adviceHeavyRain.ta : "பூச்சிக்கொல்லி மருந்து தெளிப்பதைத் தவிர்க்கவும்.";
+
+          const speechText = `வணக்கம் ${farmerName}! இன்று பிற்பகல் 3 மணிக்குப் பிறகு உங்கள் ${panchayatName} ஊராட்சியில் கனமழை பெய்ய வாய்ப்பு உள்ளது. உங்கள் ${cropNameTa} பயிரில்: ${adviceTa}`;
+          const utterance = new SpeechSynthesisUtterance(speechText);
+          utterance.lang = 'ta-IN';
+          utterance.rate = 1.0;
+          window.speechSynthesis.speak(utterance);
+        }
+
+        // Animated audio progress bar: ▶ ━━━━━━━━━━━ 00:15
+        let progress = 15;
+        clearInterval(ivrTimerInterval);
+        ivrTimerInterval = setInterval(() => {
+          progress += 22;
+          if (progress > 100) progress = 100;
+          audioBar.style.width = `${progress}%`;
+        }, 300);
+
+        // Step 3: ✅ "Call Completed" (after 2400ms)
+        setTimeout(() => {
+          clearInterval(ivrTimerInterval);
+          audioBar.style.width = "100%";
+          ivrState = 'completed';
+
+          completedPane.classList.remove('hidden');
+
+          // Change button to: "✓ Call Completed"
+          btn.disabled = false;
+          btn.className = "w-full py-3.5 px-5 rounded-xl font-bold text-sm text-sky-900 bg-sky-100 border-2 border-sky-400 shadow-sm flex items-center justify-center gap-2 cursor-pointer";
+          btn.innerHTML = `
+            <i data-lucide="phone-off" class="w-4 h-4 text-sky-700"></i>
+            <span id="ivr-btn-text">${currentLang === 'ta' ? "✓ அழைப்பு முடிவடைந்தது" : "✓ Call Completed"}</span>
+          `;
+
+          // Update Delivery Status Table row for IVR
+          const statusCell = document.getElementById('tbl-status-ivr');
+          statusCell.innerHTML = `
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-sky-100 text-sky-800 border border-sky-300 ring-2 ring-sky-400/30 animate-pulse">
+              <span>✅ Completed</span>
+              <span class="text-[10px] text-sky-700 font-normal">Just now</span>
+            </span>
+          `;
+          document.getElementById('row-ivr').classList.add('bg-sky-50/60');
+
+          lucide.createIcons();
+        }, 2200);
+
+      }, 1000);
+    }
+
+    function resetIVRCall() {
+      ivrState = 'idle';
+      clearInterval(ivrTimerInterval);
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      const btn = document.getElementById('btn-start-ivr');
+      btn.disabled = false;
+      btn.className = "w-full py-3.5 px-5 rounded-xl font-bold text-sm text-white bg-sky-600 hover:bg-sky-700 active:scale-[0.99] shadow-md shadow-sky-700/20 transition-all flex items-center justify-center gap-2.5 cursor-pointer";
+      btn.innerHTML = `
+        <i data-lucide="phone-call" class="w-4 h-4" id="ivr-btn-icon"></i>
+        <span id="ivr-btn-text">${currentLang === 'ta' ? "தானியங்கி அழைப்பைத் தொடங்கவும்" : "Start IVR Call"}</span>
+      `;
+      document.getElementById('ivr-result-box').classList.add('hidden');
+      document.getElementById('row-ivr').classList.remove('bg-sky-50/60');
+      lucide.createIcons();
+    }
+
+    function updatePageWithConnectedProfile(profile) {
+      if (!profile) profile = getFarmerProfile();
+
+      const district = profile.district || 'Thiruvarur';
+      const block = profile.block || 'Needamangalam';
+      const panchayat = profile.panchayat || 'Demo Panchayat';
+      const name = profile.name || 'Vishnu';
+      const crop = profile.crop || 'Paddy (Samba)';
+      const phone = profile.phone || '+91 98401 23456';
+      const lang = profile.lang || currentLang || 'en';
+
+      const cropInfo = (typeof GRAMCAST_CROPS !== 'undefined' && GRAMCAST_CROPS[crop]) 
+        ? GRAMCAST_CROPS[crop] 
+        : {
+            ta: "நெல்",
+            adviceHeavyRain: {
+              en: "Avoid pesticide spraying on Paddy fields.",
+              ta: "பூச்சிக்கொல்லி மருந்து தெளிப்பதைத் தவிர்க்கவும்."
+            },
+            actionHeavyRain: {
+              en: "AVOID PESTICIDE SPRAYING",
+              ta: "பூச்சிக்கொல்லி தெளிப்பதைத் தவிர்க்கவும்"
+            }
+          };
+
+      // Location Banner
+      const elPanch = document.getElementById('display-panchayat');
+      const elHier = document.getElementById('display-hierarchy');
+      const elFarmer = document.getElementById('loc-farmer');
+      const elCrop = document.getElementById('loc-crop');
+      if (elPanch) elPanch.textContent = panchayat;
+      if (elHier) elHier.textContent = `${block} Block • ${district} District`;
+      if (elFarmer) elFarmer.textContent = `Farmer: ${name}`;
+      if (elCrop) elCrop.textContent = crop;
+
+      // Personalized Title Banner
+      const elSubName = document.getElementById('sub-farmer-name');
+      const elSubCrop = document.getElementById('sub-farmer-crop');
+      const elSubPanch = document.getElementById('sub-panchayat-name');
+      if (elSubName) elSubName.textContent = name;
+      if (elSubCrop) elSubCrop.textContent = crop;
+      if (elSubPanch) elSubPanch.textContent = panchayat;
+
+      // Personalized Speech Texts
+      const speechTa = `வணக்கம் ${name}! இன்று பிற்பகல் 3 மணிக்குப் பிறகு உங்கள் ${panchayat} ஊராட்சியில் கனமழை பெய்ய வாய்ப்பு உள்ளது. உங்கள் ${cropInfo.ta} பயிரில்: ${cropInfo.adviceHeavyRain.ta}`;
+      const speechEn = `Hello ${name}! Heavy rain is expected in ${panchayat} today after 3 PM. Recommended action for your ${crop}: ${cropInfo.actionHeavyRain.en}.`;
+
+      const elTamilSpeech = document.getElementById('tamil-speech-text');
+      const elTransText = document.getElementById('trans-text');
+      if (elTamilSpeech) elTamilSpeech.textContent = `"${speechTa}"`;
+      if (elTransText) elTransText.textContent = `"${speechEn}"`;
+
+      // Delivery Simulation Recipients & Messages
+      const elWaRec = document.getElementById('wa-val-recipient');
+      const elWaMsg = document.getElementById('wa-val-msg');
+      const elIvrRec = document.getElementById('ivr-val-recipient');
+      const elIvrMsg = document.getElementById('ivr-val-msg');
+      const elTblWa = document.getElementById('tbl-rec-wa');
+      const elTblIvr = document.getElementById('tbl-rec-ivr');
+
+      if (elWaRec) elWaRec.textContent = `${phone} (${name})`;
+      if (elWaMsg) elWaMsg.textContent = `"${speechTa}"`;
+      if (elIvrRec) elIvrRec.textContent = `${phone} (${name})`;
+      if (elIvrMsg) elIvrMsg.textContent = `"${speechTa}"`;
+      if (elTblWa) elTblWa.textContent = `${phone} (${name})`;
+      if (elTblIvr) elTblIvr.textContent = `${phone} (${name})`;
+
+      // Navigation links
+      const q = `?district=${encodeURIComponent(district)}&block=${encodeURIComponent(block)}&panchayat=${encodeURIComponent(panchayat)}&lang=${encodeURIComponent(lang)}&crop=${encodeURIComponent(crop)}&name=${encodeURIComponent(name)}`;
+      const linkWeather = document.getElementById('link-view-weather');
+      if (linkWeather) linkWeather.href = `weather.html${q}`;
+      const linkAdvisory = document.getElementById('link-back-advisory');
+      if (linkAdvisory) linkAdvisory.href = `advisory.html${q}`;
+      const btnHeaderAdvisory = document.getElementById('btn-header-advisory');
+      if (btnHeaderAdvisory) btnHeaderAdvisory.href = `advisory.html${q}`;
+      const navAdvisory = document.getElementById('nav-advisory');
+      if (navAdvisory) navAdvisory.href = `advisory.html${q}`;
+
+      if (lang !== currentLang && typeof setLanguage === 'function') {
+        setLanguage(lang);
+      }
+
+      lucide.createIcons();
+    }
+
+    // Initialize from URL params or localStorage
+    document.addEventListener('DOMContentLoaded', () => {
+      const profile = getFarmerProfile();
+      updatePageWithConnectedProfile(profile);
+
+      if (profile.lang === 'ta') {
+        setLanguage('ta');
+      }
+
+      lucide.createIcons();
+    });
+
+    window.addEventListener('farmerProfileChanged', (e) => {
+      if (e.detail) {
+        updatePageWithConnectedProfile(e.detail);
+      }
+    });
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+
+    // Notification dropdown handlers
+    function toggleNotificationMenu() {
+      const dropdown = document.getElementById('notif-dropdown');
+      if (dropdown) dropdown.classList.toggle('hidden');
+    }
+
+    function markAllNotificationsRead() {
+      document.querySelectorAll('.notif-item').forEach(item => {
+        item.classList.remove('bg-emerald-50/40', 'bg-blue-50/40', 'bg-sky-50/40', 'border-emerald-100/60', 'border-blue-100/60', 'border-sky-100/60');
+        item.classList.add('bg-slate-50/60');
+      });
+      document.querySelectorAll('.notif-dot').forEach(dot => {
+        dot.classList.add('hidden');
+      });
+      const badge = document.getElementById('notif-badge');
+      if (badge) {
+        badge.textContent = "0";
+        badge.classList.add('hidden');
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const bellBtn = document.getElementById('notif-bell-btn');
+      const dropdown = document.getElementById('notif-dropdown');
+      if (bellBtn && dropdown && !bellBtn.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

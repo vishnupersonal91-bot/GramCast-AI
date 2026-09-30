@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advisory History - GramCast AI</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              green: '#15803d',
+              greenLight: '#22c55e',
+              greenSoft: '#f0fdf4',
+              blue: '#0284c7',
+              blueLight: '#38bdf8',
+              blueSoft: '#f0f9ff',
+              slateBg: '#f8fafc'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- GramCast Central Shared App State & Farmer Profile Manager -->
+  <script src="app-state.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Tamil:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', 'Noto Sans Tamil', sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .custom-gradient-text {
+      background: linear-gradient(135deg, #15803d 0%, #0284c7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .card-shadow {
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased bg-slate-50 text-slate-800">
+
+  <!-- TOP CONTEXT BAR -->
+  <div class="bg-gradient-to-r from-emerald-800 via-teal-800 to-sky-900 text-white text-xs sm:text-sm py-1.5 px-4 text-center font-medium shadow-inner">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-2">
+      <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-200 border border-emerald-400/30">
+        Part 7
+      </span>
+      <span id="top-bar-text">GramCast AI • Advisory History & Verification Audit Log</span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm transition-all duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-emerald-500/40 rounded-xl p-1">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-600 to-sky-600 flex items-center justify-center text-white shadow-md shadow-emerald-700/20 group-hover:scale-105 transition-transform duration-200">
+            <i data-lucide="sprout" class="w-6 h-6 stroke-[2.2]"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-1.5 font-sans">
+              GramCast <span class="bg-gradient-to-r from-sky-600 to-emerald-600 text-white text-xs px-2 py-0.5 rounded-md font-semibold tracking-wider">AI</span>
+            </span>
+            <span class="text-[11px] font-medium text-slate-500 tracking-wide">Panchayat Micro-Weather Intelligence</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center gap-1 lg:gap-1.5">
+          <a href="index.html" id="nav-home" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-slate-100/70 rounded-lg transition-colors flex items-center gap-1.5">
+            <i data-lucide="home" class="w-4 h-4"></i>
+            <span>Home</span>
+          </a>
+          <a href="weather.html" id="nav-weather" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-slate-100/70 rounded-lg transition-colors flex items-center gap-1.5">
+            <i data-lucide="cloud-sun" class="w-4 h-4 text-sky-600"></i>
+            <span>Weather</span>
+          </a>
+          <a href="advisory.html" id="nav-advisory" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-slate-100/70 rounded-lg transition-colors flex items-center gap-1.5">
+            <i data-lucide="clipboard-list" class="w-4 h-4 text-emerald-600"></i>
+            <span>Advisory</span>
+          </a>
+          <a href="voice.html" id="nav-voice" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-slate-100/70 rounded-lg transition-colors flex items-center gap-1.5">
+            <i data-lucide="volume-2" class="w-4 h-4 text-blue-600"></i>
+            <span>Voice Alert</span>
+          </a>
+          <a href="dashboard.html" id="nav-dashboard" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-slate-100/70 rounded-lg transition-colors flex items-center gap-1.5">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 text-indigo-600"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="history.html" id="nav-history" class="px-3 py-2 text-sm font-semibold text-emerald-700 bg-emerald-50/80 rounded-lg transition-colors border border-emerald-100 flex items-center gap-1.5">
+            <i data-lucide="history" class="w-4 h-4 text-emerald-600"></i>
+            <span>History</span>
+          </a>
+        </nav>
+
+        <!-- Right Tools: Farmer Profile, Notification Bell & Language Toggle -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Connected Farmer Profile Quick Badge -->
+          <button 
+            id="btn-header-farmer-profile" 
+            onclick="openFarmerProfileModal()" 
+            type="button"
+            class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-emerald-200 bg-emerald-50/80 hover:bg-emerald-100/80 text-slate-800 text-xs font-semibold shadow-sm transition-all cursor-pointer group"
+            title="Connected Farmer Profile — Click to view or edit"
+          >
+            <div class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] font-bold header-farmer-avatar">V</div>
+            <span class="font-bold text-slate-900 header-farmer-name">Vishnu</span>
+            <span class="text-slate-300">•</span>
+            <span class="text-emerald-700 font-medium truncate max-w-[130px] header-farmer-loc">Demo Panchayat</span>
+            <i data-lucide="edit-3" class="w-3 h-3 text-emerald-600 opacity-60 group-hover:opacity-100"></i>
+          </button>
+
+          <!-- SECTION 5: NOTIFICATION BELL DROPDOWN -->
+          <div class="relative">
+            <button 
+              id="notif-bell-btn" 
+              onclick="toggleNotificationMenu()" 
+              class="relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
+              aria-label="View notifications"
+            >
+              <i data-lucide="bell" class="w-5 h-5"></i>
+              <!-- Unread badge -->
+              <span id="notif-badge" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-600 text-white font-extrabold text-[10px] flex items-center justify-center border-2 border-white shadow-sm">
+                4
+              </span>
+            </button>
+
+            <!-- Notification Dropdown Menu -->
+            <div id="notif-dropdown" class="hidden absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-slate-200/90 py-3 z-50 animate-fadeIn">
+              <div class="px-4 pb-2.5 mb-2 border-b border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🔔</span>
+                  <h4 class="font-extrabold text-sm text-slate-900" id="notif-panel-title">Notifications</h4>
+                </div>
+                <button onclick="markAllNotificationsRead()" class="text-[11px] font-bold text-emerald-700 hover:underline cursor-pointer" id="btn-mark-all-read">
+                  Mark all as read
+                </button>
+              </div>
+
+              <!-- Notification items (The 4 exact required notifications) -->
+              <div class="space-y-1 px-2 max-h-80 overflow-y-auto" id="notif-list">
+                
+                <!-- Notification 1 -->
+                <div class="notif-item p-2.5 rounded-xl hover:bg-slate-50 transition-colors flex items-start gap-3 bg-emerald-50/40 border border-emerald-100/60" data-read="false">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 text-sm">
+                    🌧️
+                  </div>
+                  <div class="flex-grow">
+                    <p class="text-xs font-bold text-slate-800 leading-snug">
+                      Heavy rain advisory generated.
+                    </p>
+                    <span class="text-[10px] text-slate-400 font-medium">Demo Panchayat • Just now</span>
+                  </div>
+                  <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0 mt-1.5 notif-dot"></span>
+                </div>
+
+                <!-- Notification 2 -->
+                <div class="notif-item p-2.5 rounded-xl hover:bg-slate-50 transition-colors flex items-start gap-3 bg-blue-50/40 border border-blue-100/60" data-read="false">
+                  <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 mt-0.5 text-sm">
+                    🎙️
+                  </div>
+                  <div class="flex-grow">
+                    <p class="text-xs font-bold text-slate-800 leading-snug">
+                      Tamil voice message ready.
+                    </p>
+                    <span class="text-[10px] text-slate-400 font-medium">15s synthesized audio • 2 mins ago</span>
+                  </div>
+                  <span class="w-2 h-2 rounded-full bg-blue-600 shrink-0 mt-1.5 notif-dot"></span>
+                </div>
+
+                <!-- Notification 3 -->
+                <div class="notif-item p-2.5 rounded-xl hover:bg-slate-50 transition-colors flex items-start gap-3 bg-emerald-50/40 border border-emerald-100/60" data-read="false">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 text-sm">
+                    📱
+                  </div>
+                  <div class="flex-grow">
+                    <p class="text-xs font-bold text-slate-800 leading-snug">
+                      WhatsApp delivery completed.
+                    </p>
+                    <span class="text-[10px] text-slate-400 font-medium">To +91 XXXXX XXXXX • 5 mins ago</span>
+                  </div>
+                  <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0 mt-1.5 notif-dot"></span>
+                </div>
+
+                <!-- Notification 4 -->
+                <div class="notif-item p-2.5 rounded-xl hover:bg-slate-50 transition-colors flex items-start gap-3 bg-sky-50/40 border border-sky-100/60" data-read="false">
+                  <div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center shrink-0 mt-0.5 text-sm">
+                    ☎️
+                  </div>
+                  <div class="flex-grow">
+                    <p class="text-xs font-bold text-slate-800 leading-snug">
+                      IVR call completed.
+                    </p>
+                    <span class="text-[10px] text-slate-400 font-medium">Auto-call verified • 10 mins ago</span>
+                  </div>
+                  <span class="w-2 h-2 rounded-full bg-sky-600 shrink-0 mt-1.5 notif-dot"></span>
+                </div>
+
+              </div>
+
+              <div class="px-4 pt-2.5 mt-2 border-t border-slate-100 text-center">
+                <span class="text-[11px] text-slate-400 font-medium">All notifications synced locally</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Language Toggle -->
+          <div class="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200">
+            <button 
+              id="lang-en" 
+              onclick="setLanguage('en')" 
+              class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all duration-200 bg-white text-emerald-800 shadow-sm"
+              title="Switch to English"
+            >
+              EN
+            </button>
+            <button 
+              id="lang-ta" 
+              onclick="setLanguage('ta')" 
+              class="px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200"
+              title="தமிழுக்கு மாறவும்"
+            >
+              தமிழ்
+            </button>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none" aria-label="Toggle navigation menu">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-4 space-y-1 shadow-lg">
+      <div class="pb-2 border-b border-slate-100">
+        <button onclick="openFarmerProfileModal()" type="button" class="w-full text-left px-3 py-2 rounded-xl text-xs font-bold text-emerald-900 bg-emerald-50 border border-emerald-200 flex items-center justify-between">
+          <span class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold header-farmer-avatar">V</span>
+            <span>Farmer: <strong class="header-farmer-name">Vishnu</strong> (<span class="header-farmer-loc">Demo Panchayat</span>)</span>
+          </span>
+          <span class="text-xs text-emerald-700 font-semibold flex items-center gap-0.5">
+            <span>Edit</span>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+          </span>
+        </button>
+      </div>
+      <a href="index.html" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Home</a>
+      <a href="weather.html" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Weather</a>
+      <a href="advisory.html" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Advisory</a>
+      <a href="voice.html" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Voice Alert</a>
+      <a href="dashboard.html" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Dashboard</a>
+      <a href="history.html" class="block px-3 py-2.5 rounded-lg text-base font-semibold text-emerald-700 bg-emerald-50">History</a>
+    </div>
+  </header>
+
+  <!-- MAIN BODY -->
+  <main class="flex-grow py-8 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
+    
+    <!-- PAGE TITLE -->
+    <div class="mb-8">
+      <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+        <i data-lucide="archive" class="w-3.5 h-3.5"></i>
+        <span>Advisory Log & Audit Trail</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight" id="page-title">
+        Advisory History
+      </h1>
+      <p class="text-sm text-slate-500 mt-1" id="page-subtitle">
+        Review previously generated weather advisories, downscaling conditions, and multi-channel delivery verifications.
+      </p>
+    </div>
+
+    <!-- SECTION 1 — TODAY'S ALERT (Required) -->
+    <section class="mb-10">
+      <div class="bg-gradient-to-r from-white via-red-50/30 to-orange-50/20 rounded-2xl border-2 border-red-300 card-shadow p-6 sm:p-7 relative overflow-hidden">
+        
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          
+          <!-- Left side: Today's alert info -->
+          <div class="space-y-3">
+            <div class="flex items-center gap-2.5">
+              <span class="text-3xl sm:text-4xl">🌧️</span>
+              <div>
+                <span class="text-[11px] font-extrabold uppercase tracking-wider text-red-600 bg-red-100 px-2.5 py-0.5 rounded-full" id="todays-badge-title">
+                  Today's Latest Alert
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-0.5" id="todays-alert-title">
+                  Heavy Rain Expected
+                </h2>
+              </div>
+            </div>
+
+            <!-- Panchayat & Farmer & Time metadata -->
+            <div class="flex flex-wrap items-center gap-y-1 gap-x-4 text-xs font-semibold text-slate-600">
+              <span class="flex items-center gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-emerald-600"></i>
+                <span class="text-slate-400 font-normal">Panchayat:</span>
+                <strong class="text-slate-800" id="todays-panchayat">Demo Panchayat</strong>
+              </span>
+              <span class="text-slate-300 hidden sm:inline">•</span>
+              <span class="flex items-center gap-1.5">
+                <i data-lucide="user" class="w-4 h-4 text-emerald-600"></i>
+                <span class="text-slate-400 font-normal">Farmer:</span>
+                <strong class="text-slate-800" id="todays-farmer">Vishnu</strong>
+                <span class="text-slate-400 font-normal">(<span id="todays-crop" class="text-emerald-700 font-bold">Paddy (Samba)</span>)</span>
+              </span>
+              <span class="text-slate-300 hidden sm:inline">•</span>
+              <span class="flex items-center gap-1.5">
+                <i data-lucide="clock" class="w-4 h-4 text-sky-600"></i>
+                <span class="text-slate-400 font-normal">Time:</span>
+                <strong class="text-slate-800" id="todays-time">Today, 3:00 PM</strong>
+              </span>
+            </div>
+
+            <!-- Recommendation -->
+            <div class="bg-white rounded-xl p-3.5 border border-red-200/80 max-w-xl">
+              <span class="text-[10px] font-extrabold text-red-700 uppercase tracking-wider block mb-0.5" id="todays-rec-label">
+                Official Recommendation
+              </span>
+              <p class="text-base font-extrabold text-red-900" id="todays-recommendation">
+                "Avoid pesticide spraying."
+              </p>
+            </div>
+          </div>
+
+          <!-- Right side: 5-Stage Status Pipeline -->
+          <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/90 shadow-sm shrink-0 lg:w-80">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-3" id="todays-pipeline-label">
+              Pipeline Status
+            </span>
+            
+            <div class="space-y-2 text-xs">
+              <div class="flex items-center justify-between">
+                <span class="text-slate-600">Weather:</span>
+                <span class="font-extrabold text-emerald-700 flex items-center gap-1">
+                  ✓ Processed
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-600">Advisory:</span>
+                <span class="font-extrabold text-emerald-700 flex items-center gap-1">
+                  ✓ Generated
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-600">Tamil Voice:</span>
+                <span class="font-extrabold text-blue-700 flex items-center gap-1">
+                  ✓ Generated
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-600">WhatsApp:</span>
+                <span class="font-extrabold text-emerald-700 flex items-center gap-1">
+                  ✓ Delivered
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-600">IVR:</span>
+                <span class="font-extrabold text-sky-700 flex items-center gap-1">
+                  ✓ Completed
+                </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 3 — FILTERS (Required) -->
+    <section class="mb-6">
+      <div class="bg-white rounded-2xl border border-slate-200 card-shadow p-5">
+        <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
+          <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5" id="filters-heading">
+            <i data-lucide="filter" class="w-4 h-4 text-emerald-600"></i>
+            <span>Filter Advisory Records</span>
+          </span>
+          <button onclick="resetFilters()" class="text-xs font-semibold text-emerald-700 hover:underline cursor-pointer" id="btn-reset-filters">
+            Reset Filters
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          
+          <!-- Filter: Date -->
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 mb-1" id="lbl-flt-date">Date</label>
+            <select id="flt-date" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 cursor-pointer">
+              <option value="all">All Dates</option>
+              <option value="29 Sep 2026">29 Sep 2026 (Today)</option>
+              <option value="28 Sep 2026">28 Sep 2026</option>
+              <option value="27 Sep 2026">27 Sep 2026</option>
+              <option value="26 Sep 2026">26 Sep 2026</option>
+            </select>
+          </div>
+
+          <!-- Filter: Panchayat -->
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 mb-1" id="lbl-flt-panchayat">Panchayat</label>
+            <select id="flt-panchayat" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 cursor-pointer">
+              <option value="all">All Panchayats</option>
+              <option value="Demo Panchayat">Demo Panchayat</option>
+              <option value="Rayapuram">Rayapuram</option>
+              <option value="Kovilvenni">Kovilvenni</option>
+              <option value="Munnavalkottai">Munnavalkottai</option>
+            </select>
+          </div>
+
+          <!-- Filter: Advisory Type -->
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 mb-1" id="lbl-flt-type">Advisory Type</label>
+            <select id="flt-type" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 cursor-pointer">
+              <option value="all">All Types</option>
+              <option value="Avoid pesticide spraying">Avoid pesticide spraying</option>
+              <option value="Consider irrigation">Consider irrigation</option>
+              <option value="Avoid spraying">Avoid spraying</option>
+              <option value="Normal activities">Normal agricultural activities</option>
+            </select>
+          </div>
+
+          <!-- Filter: Delivery Channel -->
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 mb-1" id="lbl-flt-channel">Delivery Channel</label>
+            <select id="flt-channel" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 cursor-pointer">
+              <option value="all">All Channels</option>
+              <option value="WhatsApp">📱 WhatsApp</option>
+              <option value="IVR">☎️ IVR</option>
+            </select>
+          </div>
+
+          <!-- Filter: Status -->
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 mb-1" id="lbl-flt-status">Status</label>
+            <select id="flt-status" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/40 cursor-pointer">
+              <option value="all">All Statuses</option>
+              <option value="Delivered">Delivered</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2 — ADVISORY HISTORY (Required: Table/Card list with example records) -->
+    <section class="mb-10">
+      <div class="bg-white rounded-2xl border border-slate-200 card-shadow overflow-hidden">
+        
+        <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+          <div>
+            <h3 class="font-extrabold text-base sm:text-lg text-slate-900" id="table-section-title">
+              Advisory Transmission Records
+            </h3>
+            <span class="text-xs text-slate-400" id="record-count-label">Showing all records</span>
+          </div>
+          <span class="text-xs text-slate-500 font-medium">Click any row for detailed inspection</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead>
+              <tr class="border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[11px] bg-slate-50/70">
+                <th class="py-3 px-4" id="th-h-date">Date</th>
+                <th class="py-3 px-4" id="th-h-weather">Weather</th>
+                <th class="py-3 px-4" id="th-h-advisory">Advisory</th>
+                <th class="py-3 px-4" id="th-h-lang">Language</th>
+                <th class="py-3 px-4" id="th-h-delivery">Delivery</th>
+                <th class="py-3 px-4" id="th-h-status">Status</th>
+                <th class="py-3 px-4 text-right" id="th-h-action">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-medium" id="history-table-body">
+              <!-- Rendered via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 4 — ADVISORY DETAILS PANEL / MODAL (Required) -->
+    <div id="details-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl max-w-2xl w-full border border-slate-200 shadow-2xl p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto animate-fadeIn">
+        
+        <!-- Modal close button -->
+        <button onclick="closeDetailsModal()" class="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+          <i data-lucide="file-text" class="w-4 h-4"></i>
+          <span>Record Inspection</span>
+        </div>
+        <h3 class="text-2xl font-black text-slate-900 mb-1" id="modal-title">
+          Advisory Details
+        </h3>
+        <p class="text-xs text-slate-500 mb-6" id="modal-subtitle">
+          Full agro-climatic downscaling breakdown and transmission log.
+        </p>
+
+        <!-- Location hierarchy -->
+        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 mb-5 flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div>
+            <span class="text-slate-400 uppercase text-[10px] font-bold block">Panchayat:</span>
+            <strong class="text-sm font-bold text-slate-900" id="det-panchayat">Demo Panchayat</strong>
+          </div>
+          <div>
+            <span class="text-slate-400 uppercase text-[10px] font-bold block">Block:</span>
+            <strong class="text-sm font-bold text-slate-800" id="det-block">Needamangalam</strong>
+          </div>
+          <div>
+            <span class="text-slate-400 uppercase text-[10px] font-bold block">District:</span>
+            <strong class="text-sm font-bold text-slate-800" id="det-district">Thiruvarur</strong>
+          </div>
+          <div>
+            <span class="text-slate-400 uppercase text-[10px] font-bold block">Date:</span>
+            <strong class="text-sm font-bold text-slate-800" id="det-date">29 Sep 2026</strong>
+          </div>
+        </div>
+
+        <!-- Two Columns: Weather Conditions & Panchayat Features -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5 text-xs">
+          
+          <!-- Weather Conditions -->
+          <div class="bg-white rounded-xl p-4 border border-sky-200 shadow-sm">
+            <h4 class="font-bold text-sky-800 uppercase tracking-wider text-[11px] mb-3 flex items-center gap-1.5">
+              <i data-lucide="cloud-rain" class="w-4 h-4 text-sky-600"></i>
+              <span>Weather Conditions</span>
+            </h4>
+            <div class="space-y-2">
+              <div class="flex justify-between">
+                <span class="text-slate-500">Rainfall:</span>
+                <strong class="text-slate-900 font-bold" id="det-rain">40–50 mm</strong>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Temperature:</span>
+                <strong class="text-slate-900 font-bold" id="det-temp">30–32°C</strong>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Humidity:</span>
+                <strong class="text-slate-900 font-bold" id="det-humidity">75%</strong>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Wind Speed:</span>
+                <strong class="text-slate-900 font-bold" id="det-wind">15 km/h</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panchayat Features -->
+          <div class="bg-white rounded-xl p-4 border border-emerald-200 shadow-sm">
+            <h4 class="font-bold text-emerald-800 uppercase tracking-wider text-[11px] mb-3 flex items-center gap-1.5">
+              <i data-lucide="mountain" class="w-4 h-4 text-emerald-600"></i>
+              <span>Panchayat Features</span>
+            </h4>
+            <div class="space-y-2">
+              <div class="flex justify-between">
+                <span class="text-slate-500">Elevation:</span>
+                <strong class="text-slate-900 font-bold" id="det-elevation">18 m</strong>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Slope:</span>
+                <strong class="text-slate-900 font-bold" id="det-slope">2.4°</strong>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Coastal Distance:</span>
+                <strong class="text-slate-900 font-bold" id="det-coast">32 km</strong>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Terrain Type:</span>
+                <strong class="text-slate-900 font-bold">Delta Plain</strong>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- AI Estimate -->
+        <div class="bg-indigo-50/70 rounded-xl p-4 border border-indigo-200 mb-5 text-xs">
+          <h4 class="font-bold text-indigo-900 uppercase tracking-wider text-[11px] mb-2 flex items-center gap-1.5">
+            <i data-lucide="cpu" class="w-4 h-4 text-indigo-600"></i>
+            <span>AI Estimate (LightGBM Downscaled)</span>
+          </h4>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <span class="text-slate-500 block">Rainfall Range:</span>
+              <strong class="text-sm font-black text-indigo-950" id="det-ai-rain">40–50 mm</strong>
+            </div>
+            <div>
+              <span class="text-slate-500 block">Temperature Range:</span>
+              <strong class="text-sm font-black text-indigo-950" id="det-ai-temp">30–32°C</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generated Advisory & Reason -->
+        <div class="bg-red-50 rounded-2xl p-4 border border-red-200 mb-5 text-xs">
+          <span class="text-[10px] font-extrabold text-red-700 uppercase tracking-wider block mb-1">
+            Generated Advisory
+          </span>
+          <p class="text-base font-black text-red-950 mb-2" id="det-advisory">
+            "Avoid pesticide spraying."
+          </p>
+          <div class="border-t border-red-200 pt-2 flex items-start gap-1.5 text-slate-700">
+            <span class="font-bold text-red-800">Reason:</span>
+            <span id="det-reason">High rainfall combined with strong wind.</span>
+          </div>
+        </div>
+
+        <!-- Delivery Channel & Status -->
+        <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <span class="text-slate-500">Delivery Channel:</span>
+            <strong class="font-bold text-slate-900" id="det-delivery">WhatsApp</strong>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-slate-500">Delivery Status:</span>
+            <span class="px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 text-xs" id="det-status">
+              Delivered
+            </span>
+          </div>
+        </div>
+
+        <div class="mt-6 text-right">
+          <button onclick="closeDetailsModal()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs transition-colors cursor-pointer">
+            Close Panel
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 py-8 px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500 mt-12">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-6 h-6 rounded-md bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">
+          G
+        </div>
+        <span class="font-semibold text-slate-700">GramCast AI</span>
+        <span>— Historical Intelligence & Audit Trail</span>
+      </div>
+      <div>
+        <span id="footer-part-text">Part 7: Advisory History & Notification Center</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT: DATASET, FILTERING, MODAL, AND NOTIFICATIONS -->
+  <script>
+    // Historical Advisory Records
+    const historyRecords = [
+      {
+        id: "rec-1",
+        date: "29 Sep 2026",
+        panchayat: "Demo Panchayat",
+        block: "Needamangalam",
+        district: "Thiruvarur",
+        weather: "Heavy Rain",
+        weatherIcon: "🌧️",
+        advisory: "Avoid pesticide spraying",
+        reason: "High rainfall combined with strong wind.",
+        language: "Tamil",
+        delivery: "WhatsApp",
+        status: "Delivered",
+        rain: "40–50 mm",
+        temp: "30–32°C",
+        humidity: "75%",
+        wind: "15 km/h",
+        elevation: "18 m",
+        slope: "2.4°",
+        coast: "32 km"
+      },
+      {
+        id: "rec-2",
+        date: "28 Sep 2026",
+        panchayat: "Demo Panchayat",
+        block: "Needamangalam",
+        district: "Thiruvarur",
+        weather: "High Temperature",
+        weatherIcon: "☀️",
+        advisory: "Consider irrigation",
+        reason: "Elevated temperature (35°C) with low soil moisture.",
+        language: "Tamil",
+        delivery: "IVR",
+        status: "Completed",
+        rain: "0–2 mm",
+        temp: "35–37°C",
+        humidity: "45%",
+        wind: "8 km/h",
+        elevation: "18 m",
+        slope: "2.4°",
+        coast: "32 km"
+      },
+      {
+        id: "rec-3",
+        date: "27 Sep 2026",
+        panchayat: "Demo Panchayat",
+        block: "Needamangalam",
+        district: "Thiruvarur",
+        weather: "Strong Wind",
+        weatherIcon: "💨",
+        advisory: "Avoid spraying",
+        reason: "Sustained high wind drift exceeding 22 km/h.",
+        language: "Tamil",
+        delivery: "WhatsApp",
+        status: "Delivered",
+        rain: "5–8 mm",
+        temp: "31–33°C",
+        humidity: "68%",
+        wind: "24 km/h",
+        elevation: "18 m",
+        slope: "2.4°",
+        coast: "32 km"
+      },
+      {
+        id: "rec-4",
+        date: "26 Sep 2026",
+        panchayat: "Rayapuram",
+        block: "Needamangalam",
+        district: "Thiruvarur",
+        weather: "Normal",
+        weatherIcon: "⛅",
+        advisory: "Normal activities",
+        reason: "Balanced temperature and moderate breeze.",
+        language: "Tamil",
+        delivery: "WhatsApp",
+        status: "Delivered",
+        rain: "2–4 mm",
+        temp: "32–33°C",
+        humidity: "60%",
+        wind: "10 km/h",
+        elevation: "20 m",
+        slope: "2.1°",
+        coast: "30 km"
+      },
+      {
+        id: "rec-5",
+        date: "26 Sep 2026",
+        panchayat: "Kovilvenni",
+        block: "Needamangalam",
+        district: "Thiruvarur",
+        weather: "High Temperature",
+        weatherIcon: "☀️",
+        advisory: "Consider irrigation",
+        reason: "Low rainfall and dry soil gradient.",
+        language: "Tamil",
+        delivery: "IVR",
+        status: "Completed",
+        rain: "0 mm",
+        temp: "34–36°C",
+        humidity: "50%",
+        wind: "9 km/h",
+        elevation: "19 m",
+        slope: "2.3°",
+        coast: "33 km"
+      }
+    ];
+
+    // Render Table Rows
+    function renderHistoryTable(records) {
+      const tbody = document.getElementById('history-table-body');
+      tbody.innerHTML = '';
+
+      if (records.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="py-8 text-center text-slate-400 font-medium">
+              No advisory records match the selected filter criteria.
+            </td>
+          </tr>
+        `;
+        document.getElementById('record-count-label').textContent = "0 records found";
+        return;
+      }
+
+      records.forEach(rec => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/80 transition-colors cursor-pointer group";
+        tr.onclick = () => openDetailsModal(rec);
+
+        const statusBadge = rec.status === "Delivered" 
+          ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">✅ Delivered</span>`
+          : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-100 text-sky-800">✅ Completed</span>`;
+
+        const channelBadge = rec.delivery === "WhatsApp"
+          ? `<span class="flex items-center gap-1 text-slate-800 font-semibold">📱 WhatsApp</span>`
+          : `<span class="flex items-center gap-1 text-slate-800 font-semibold">☎️ IVR</span>`;
+
+        tr.innerHTML = `
+          <td class="py-3.5 px-4 font-mono text-slate-700 text-xs font-bold">${rec.date}</td>
+          <td class="py-3.5 px-4 font-semibold text-slate-800">
+            <span class="mr-1">${rec.weatherIcon}</span> ${rec.weather}
+          </td>
+          <td class="py-3.5 px-4 text-slate-800 font-bold max-w-xs truncate">${rec.advisory}</td>
+          <td class="py-3.5 px-4 text-slate-600">${rec.language}</td>
+          <td class="py-3.5 px-4">${channelBadge}</td>
+          <td class="py-3.5 px-4">${statusBadge}</td>
+          <td class="py-3.5 px-4 text-right">
+            <button class="text-xs font-bold text-emerald-700 hover:text-emerald-800 group-hover:translate-x-0.5 transition-transform flex items-center gap-1 ml-auto">
+              <span>View Details</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('record-count-label').textContent = `Showing ${records.length} records`;
+      lucide.createIcons();
+    }
+
+    // Filter Logic
+    function applyFilters() {
+      const fDate = document.getElementById('flt-date').value;
+      const fPanchayat = document.getElementById('flt-panchayat').value;
+      const fType = document.getElementById('flt-type').value;
+      const fChannel = document.getElementById('flt-channel').value;
+      const fStatus = document.getElementById('flt-status').value;
+
+      const filtered = historyRecords.filter(r => {
+        const matchDate = (fDate === 'all' || r.date === fDate);
+        const matchPanchayat = (fPanchayat === 'all' || r.panchayat === fPanchayat);
+        const matchType = (fType === 'all' || r.advisory.toLowerCase().includes(fType.toLowerCase()));
+        const matchChannel = (fChannel === 'all' || r.delivery === fChannel);
+        const matchStatus = (fStatus === 'all' || r.status === fStatus);
+        return matchDate && matchPanchayat && matchType && matchChannel && matchStatus;
+      });
+
+      renderHistoryTable(filtered);
+    }
+
+    function resetFilters() {
+      document.getElementById('flt-date').value = 'all';
+      document.getElementById('flt-panchayat').value = 'all';
+      document.getElementById('flt-type').value = 'all';
+      document.getElementById('flt-channel').value = 'all';
+      document.getElementById('flt-status').value = 'all';
+      renderHistoryTable(historyRecords);
+    }
+
+    // Modal Details Panel
+    function openDetailsModal(rec) {
+      document.getElementById('det-panchayat').textContent = rec.panchayat;
+      document.getElementById('det-block').textContent = rec.block;
+      document.getElementById('det-district').textContent = rec.district;
+      document.getElementById('det-date').textContent = rec.date;
+
+      document.getElementById('det-rain').textContent = rec.rain;
+      document.getElementById('det-temp').textContent = rec.temp;
+      document.getElementById('det-humidity').textContent = rec.humidity;
+      document.getElementById('det-wind').textContent = rec.wind;
+
+      document.getElementById('det-elevation').textContent = rec.elevation;
+      document.getElementById('det-slope').textContent = rec.slope;
+      document.getElementById('det-coast').textContent = rec.coast;
+
+      document.getElementById('det-ai-rain').textContent = rec.rain;
+      document.getElementById('det-ai-temp').textContent = rec.temp;
+
+      document.getElementById('det-advisory').textContent = `"${rec.advisory}."`;
+      document.getElementById('det-reason').textContent = rec.reason;
+      document.getElementById('det-delivery').textContent = rec.delivery;
+      document.getElementById('det-status').textContent = rec.status;
+
+      document.getElementById('details-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeDetailsModal() {
+      document.getElementById('details-modal').classList.add('hidden');
+    }
+
+    // SECTION 5: NOTIFICATION CENTER DROPDOWN
+    function toggleNotificationMenu() {
+      const dropdown = document.getElementById('notif-dropdown');
+      dropdown.classList.toggle('hidden');
+    }
+
+    function markAllNotificationsRead() {
+      document.querySelectorAll('.notif-item').forEach(item => {
+        item.setAttribute('data-read', 'true');
+        item.classList.remove('bg-emerald-50/40', 'bg-blue-50/40', 'bg-sky-50/40', 'border-emerald-100/60', 'border-blue-100/60', 'border-sky-100/60');
+        item.classList.add('bg-slate-50/60');
+      });
+      document.querySelectorAll('.notif-dot').forEach(dot => {
+        dot.classList.add('hidden');
+      });
+      const badge = document.getElementById('notif-badge');
+      badge.textContent = "0";
+      badge.classList.add('hidden');
+    }
+
+    // Close notifications when clicked outside
+    document.addEventListener('click', (e) => {
+      const bellBtn = document.getElementById('notif-bell-btn');
+      const dropdown = document.getElementById('notif-dropdown');
+      if (bellBtn && dropdown && !bellBtn.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+
+    // Translations for English and Tamil
+    const translations = {
+      en: {
+        topBar: "GramCast AI • Advisory History & Verification Audit Log",
+        navHome: "Home",
+        navWeather: "Weather",
+        navAdvisory: "Advisory",
+        navVoice: "Voice Alert",
+        navDashboard: "Dashboard",
+        navHistory: "History",
+        pageTitle: "Advisory History",
+        pageSubtitle: "Review previously generated weather advisories, downscaling conditions, and multi-channel delivery verifications.",
+        todaysBadge: "Today's Latest Alert",
+        todaysTitle: "Heavy Rain Expected",
+        todaysRec: '"Avoid pesticide spraying."',
+        filtersHeading: "Filter Advisory Records",
+        btnReset: "Reset Filters",
+        tableTitle: "Advisory Transmission Records",
+        thDate: "Date",
+        thWeather: "Weather",
+        thAdvisory: "Advisory",
+        thLang: "Language",
+        thDelivery: "Delivery",
+        thStatus: "Status",
+        thAction: "Action",
+        footerText: "Part 7: Advisory History & Notification Center"
+      },
+      ta: {
+        topBar: "கிராம்காஸ்ட் AI • முந்தைய ஆலோசனைகள் மற்றும் விநியோக வரலாறு",
+        navHome: "முகப்பு",
+        navWeather: "வானிலை",
+        navAdvisory: "வேளாண் ஆலோசனை",
+        navVoice: "குரல் எச்சரிக்கை",
+        navDashboard: "கட்டுப்பாட்டு பலகை",
+        navHistory: "வரலாறு",
+        pageTitle: "ஆலோசனை வரலாறு",
+        pageSubtitle: "முன்பு உருவாக்கப்பட்ட வானிலை ஆலோசனைகள், டவுன்ஸ்கேலிங் தரவுகள் மற்றும் விவசாயிகளுக்குச் சென்றடைந்த நிலையை அறியலாம்.",
+        todaysBadge: "இன்றைய முக்கிய எச்சரிக்கை",
+        todaysTitle: "கனமழை எதிர்பார்க்கப்படுகிறது",
+        todaysRec: '"பூச்சிக்கொல்லி மருந்து தெளிப்பதைத் தவிர்க்கவும்."',
+        filtersHeading: "ஆலோசனைகளை வடிகட்டவும்",
+        btnReset: "அனைத்தையும் மீட்டமை",
+        tableTitle: "ஆலோசனை விநியோக பதிவுகள்",
+        thDate: "தேதி",
+        thWeather: "வானிலை",
+        thAdvisory: "ஆலோசனை",
+        thLang: "மொழி",
+        thDelivery: "தொடர்பு வழி",
+        thStatus: "நிலை",
+        thAction: "செயல்",
+        footerText: "பகுதி 7: ஆலோசனை வரலாறு & அறிவிப்பு மையம்"
+      }
+    };
+
+    let currentLang = 'en';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      if (typeof saveFarmerProfile === 'function') {
+        const p = getFarmerProfile();
+        if (p && p.lang !== lang) {
+          saveFarmerProfile({ lang: lang });
+        }
+      }
+      const t = translations[lang];
+
+
+      const btnEn = document.getElementById('lang-en');
+      const btnTa = document.getElementById('lang-ta');
+      if (lang === 'en') {
+        btnEn.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all duration-200 bg-white text-emerald-800 shadow-sm";
+        btnTa.className = "px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200";
+      } else {
+        btnTa.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all duration-200 bg-white text-emerald-800 shadow-sm";
+        btnEn.className = "px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200";
+      }
+
+      document.getElementById('top-bar-text').textContent = t.topBar;
+      document.querySelector('#nav-home span').textContent = t.navHome;
+      document.querySelector('#nav-weather span').textContent = t.navWeather;
+      document.querySelector('#nav-advisory span').textContent = t.navAdvisory;
+      document.querySelector('#nav-voice span').textContent = t.navVoice;
+      document.querySelector('#nav-dashboard span').textContent = t.navDashboard;
+      document.querySelector('#nav-history span').textContent = t.navHistory;
+
+      document.getElementById('page-title').textContent = t.pageTitle;
+      document.getElementById('page-subtitle').textContent = t.pageSubtitle;
+      document.getElementById('todays-badge-title').textContent = t.todaysBadge;
+      document.getElementById('todays-alert-title').textContent = t.todaysTitle;
+      document.getElementById('todays-recommendation').textContent = t.todaysRec;
+
+      document.getElementById('filters-heading').querySelector('span').textContent = t.filtersHeading;
+      document.getElementById('btn-reset-filters').textContent = t.btnReset;
+      document.getElementById('table-section-title').textContent = t.tableTitle;
+      document.getElementById('th-h-date').textContent = t.thDate;
+      document.getElementById('th-h-weather').textContent = t.thWeather;
+      document.getElementById('th-h-advisory').textContent = t.thAdvisory;
+      document.getElementById('th-h-lang').textContent = t.thLang;
+      document.getElementById('th-h-delivery').textContent = t.thDelivery;
+      document.getElementById('th-h-status').textContent = t.thStatus;
+      document.getElementById('th-h-action').textContent = t.thAction;
+
+      document.getElementById('footer-part-text').textContent = t.footerText;
+
+      lucide.createIcons();
+    }
+
+    function updatePageWithConnectedProfile(profile) {
+      if (!profile) profile = getFarmerProfile();
+
+      const elPanch = document.getElementById('todays-panchayat');
+      const elFarmer = document.getElementById('todays-farmer');
+      const elCrop = document.getElementById('todays-crop');
+      const elRec = document.getElementById('todays-recommendation');
+
+      if (elPanch) elPanch.textContent = profile.panchayat || "Demo Panchayat";
+      if (elFarmer) elFarmer.textContent = profile.name || "Vishnu";
+      if (elCrop) elCrop.textContent = profile.crop || "Paddy (Samba)";
+
+      const cropInfo = (typeof GRAMCAST_CROPS !== 'undefined' && GRAMCAST_CROPS[profile.crop]) 
+        ? GRAMCAST_CROPS[profile.crop] 
+        : null;
+
+      if (elRec && cropInfo) {
+        const action = cropInfo.actionHeavyRain[currentLang] || cropInfo.actionHeavyRain.en;
+        elRec.textContent = `"${action}"`;
+      }
+
+      // Update Nav links query strings
+      const q = `?district=${encodeURIComponent(profile.district)}&block=${encodeURIComponent(profile.block)}&panchayat=${encodeURIComponent(profile.panchayat)}&lang=${encodeURIComponent(profile.lang)}&crop=${encodeURIComponent(profile.crop)}&name=${encodeURIComponent(profile.name)}`;
+      const navWeather = document.getElementById('nav-weather');
+      if (navWeather) navWeather.href = `weather.html${q}`;
+      const navAdvisory = document.getElementById('nav-advisory');
+      if (navAdvisory) navAdvisory.href = `advisory.html${q}`;
+      const navVoice = document.getElementById('nav-voice');
+      if (navVoice) navVoice.href = `voice.html${q}`;
+      const navDashboard = document.getElementById('nav-dashboard');
+      if (navDashboard) navDashboard.href = `dashboard.html${q}`;
+
+      if (profile.lang && profile.lang !== currentLang && typeof setLanguage === 'function') {
+        setLanguage(profile.lang);
+      }
+
+      lucide.createIcons();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHistoryTable(historyRecords);
+      const profile = getFarmerProfile();
+      updatePageWithConnectedProfile(profile);
+
+      if (profile.lang === 'ta') {
+        setLanguage('ta');
+      }
+
+      lucide.createIcons();
+    });
+
+    window.addEventListener('farmerProfileChanged', (e) => {
+      if (e.detail) {
+        updatePageWithConnectedProfile(e.detail);
+      }
+    });
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  </script>
+</body>
+</html>
